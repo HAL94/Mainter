@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { signIn } from '@/api/auth';
+import Logo from '@/components/logo';
+import Iconify from '@/components/iconify';
+import { bgGradient } from '@/providers/theme/css';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -13,24 +17,17 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useRouter } from 'src/routes/hooks';
-
-import { bgGradient } from 'src/theme/css';
-
-import Logo from 'src/components/logo';
-import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
 
-  const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/dashboard');
+  const handleClickLogin = async () => {    
+    const result = await signIn({ email: 'test@test.com', password: '123456' });
+    console.log('result', result);    
   };
 
   const renderForm = (
@@ -66,7 +63,7 @@ export default function LoginView() {
         type="submit"
         variant="contained"
         color="inherit"
-        onClick={handleClick}
+        onClick={handleClickLogin}
       >
         Login
       </LoadingButton>

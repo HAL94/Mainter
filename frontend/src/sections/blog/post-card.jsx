@@ -1,4 +1,8 @@
 import PropTypes from 'prop-types';
+import Iconify from '@/components/iconify';
+import { fDate } from '@/utils/format-time';
+import SvgColor from '@/components/svg-color';
+import { fShortenNumber } from '@/utils/format-number';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -9,11 +13,6 @@ import { alpha } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { fDate } from 'src/utils/format-time';
-import { fShortenNumber } from 'src/utils/format-number';
-
-import Iconify from 'src/components/iconify';
-import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
 

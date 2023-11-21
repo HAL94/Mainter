@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import Label from '@/components/label';
+import { fCurrency } from '@/utils/format-number';
+import { ColorPreview } from '@/components/color-utils';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -6,10 +9,6 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { fCurrency } from 'src/utils/format-number';
-
-import Label from 'src/components/label';
-import { ColorPreview } from 'src/components/color-utils';
 
 // ----------------------------------------------------------------------
 

@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import Iconify from '@/components/iconify';
+import { fToNow } from '@/utils/format-time';
+import Scrollbar from '@/components/scrollbar';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -9,10 +12,6 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 
-import { fToNow } from 'src/utils/format-time';
-
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
 
 // ----------------------------------------------------------------------
 

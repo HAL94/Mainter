@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { fDateTime } from '@/utils/format-time';
 
 import Card from '@mui/material/Card';
 import Timeline from '@mui/lab/Timeline';
@@ -10,7 +11,6 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 
-import { fDateTime } from 'src/utils/format-time';
 
 // ----------------------------------------------------------------------
 

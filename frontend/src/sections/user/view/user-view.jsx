@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { users } from '@/_mock/user';
+import Iconify from '@/components/iconify';
+import Scrollbar from '@/components/scrollbar';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -9,11 +12,6 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
-
-import { users } from 'src/_mock/user';
-
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';

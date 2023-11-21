@@ -25,12 +25,12 @@
     "react": {
       "version": "detect"
     },
-    "import/resolver": {
+    "import/resolver": {      
       "alias": {
         "map": [
           [
-            "src",
-            "./src"
+            "@",
+            "./frontend/src"
           ]
         ],
         "extensions": [

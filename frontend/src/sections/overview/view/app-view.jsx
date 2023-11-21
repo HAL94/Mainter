@@ -1,12 +1,10 @@
 import { faker } from '@faker-js/faker';
+import Iconify from '@/components/iconify';
+import useLanguage from '@/locale/useLanguage';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-
-import useLanguage from 'src/locale/useLanguage';
-
-import Iconify from 'src/components/iconify';
 
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';

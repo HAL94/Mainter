@@ -1,11 +1,11 @@
+import Logo from '@/components/logo';
+import { RouterLink } from '@/routes/components';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { RouterLink } from 'src/routes/components';
-
-import Logo from 'src/components/logo';
 
 // ----------------------------------------------------------------------
 
