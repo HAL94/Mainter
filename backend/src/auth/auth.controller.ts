@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -14,7 +13,7 @@ import { Public, GetCurrentUserId, GetCurrentUser } from '../common/decorators';
 import { RtGuard } from '../common/guards';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
-import { JwtPayload, Tokens } from './types';
+import { JwtPayloadWithRt, Tokens } from './types';
 
 @Controller('auth')
 export class AuthController {
@@ -22,11 +21,9 @@ export class AuthController {
 
   @Get('/me')
   @HttpCode(HttpStatus.OK)
-  async me(@GetCurrentUser() payload: JwtPayload) {
-    if (!payload) {
-      throw new BadRequestException('Request is Invalid');
-    }
-
+  @UseGuards(RtGuard)
+  async me(@GetCurrentUser() payload: Partial<JwtPayloadWithRt>) {
+    delete payload.refreshToken;
     return {
       ...payload,
     };
@@ -80,7 +77,6 @@ export class AuthController {
     });
   }
 
-  @Public()
   @UseGuards(RtGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
