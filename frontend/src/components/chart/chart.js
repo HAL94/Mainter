@@ -1,8 +1,10 @@
 import { memo } from 'react';
 import ApexChart from 'react-apexcharts';
-import { bgBlur } from '@/providers/theme/css';
 
 import { alpha, styled } from '@mui/material/styles';
+
+import { bgBlur } from 'src/providers/theme/css';
+
 
 
 // ----------------------------------------------------------------------

@@ -1,10 +1,16 @@
+/* eslint-disable */
+
 import { faker } from '@faker-js/faker';
-import Iconify from '@/components/iconify';
-import useLanguage from '@/locale/useLanguage';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+
+import useLanguage from 'src/locale/useLanguage';
+
+import Iconify from 'src/components/iconify';
+
+import { API } from 'src/api';
 
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
@@ -15,14 +21,20 @@ import AppWidgetSummary from '../app-widget-summary';
 import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
+import { getAllClients } from 'src/api/clients';
+
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
   const translate = useLanguage('ar');
+  
+  const handleGettingClient = async () => {
+    await getAllClients();
+  };
   return (
     <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: 5 }}>
+      <Typography variant="h4" sx={{ mb: 5 }} onClick={handleGettingClient}>
         {/* Hi, Welcome back 👋 */}
         {translate('welcome')}
       </Typography>

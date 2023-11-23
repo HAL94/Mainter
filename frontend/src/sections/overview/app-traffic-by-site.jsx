@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
-import { fShortenNumber } from '@/utils/format-number';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
+
+import { fShortenNumber } from 'src/utils/format-number';
 
 
 // ----------------------------------------------------------------------

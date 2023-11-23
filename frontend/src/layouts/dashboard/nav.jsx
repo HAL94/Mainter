@@ -1,11 +1,5 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Logo from '@/components/logo';
-import { account } from '@/_mock/account';
-import { usePathname } from '@/routes/hooks';
-import Scrollbar from '@/components/scrollbar';
-import { RouterLink } from '@/routes/components';
-import { useResponsive } from '@/hooks/use-responsive';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -15,6 +9,16 @@ import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
+
+import { usePathname } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
+
+import { useResponsive } from 'src/hooks/use-responsive';
+
+import { account } from 'src/_mock/account';
+
+import Logo from 'src/components/logo';
+import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';

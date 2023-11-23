@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import Iconify from '@/components/iconify';
-import { bgBlur } from '@/providers/theme/css';
 
 import Slide from '@mui/material/Slide';
 import Input from '@mui/material/Input';
@@ -9,6 +7,10 @@ import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+
+import { bgBlur } from 'src/providers/theme/css';
+
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 

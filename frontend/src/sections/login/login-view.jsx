@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import { signIn } from '@/api/auth';
-import Logo from '@/components/logo';
-import Iconify from '@/components/iconify';
-import { bgGradient } from '@/providers/theme/css';
+import { useState, useEffect  } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -17,18 +14,39 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import { useRouter } from 'src/routes/hooks';
+
+import { signIn } from 'src/api/auth';
+import { bgGradient } from 'src/providers/theme/css';
+
+import Logo from 'src/components/logo';
+import Iconify from 'src/components/iconify';
+
+
+
+
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
+  const router = useRouter();
+  const location = useLocation();
 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickLogin = async () => {    
     const result = await signIn({ email: 'test@test.com', password: '123456' });
     console.log('result', result);    
+    if (result.data.success) {
+      router.push('/');
+      localStorage.setItem('isLoggedIn', true);
+    }
   };
+
+  useEffect(() => {
+    console.log('state', location.state);
+  }, [location.state])
 
   const renderForm = (
     <>

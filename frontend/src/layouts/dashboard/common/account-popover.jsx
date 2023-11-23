@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { account } from '@/_mock/account';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -10,6 +9,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { useLogout } from 'src/utils/auth';
+
+import { account } from 'src/_mock/account';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +34,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const logout = useLogout();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -39,6 +42,10 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = () => {
+    logout.mutate({});
   };
 
   return (
@@ -105,7 +112,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleLogout}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

@@ -2,13 +2,12 @@ import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { CircularProgress } from '@mui/material';
 
+import { client } from './client';
 import AppContainer from './app-container';
-
-const client = new QueryClient();
 
 
 // ----------------------------------------------------------------------

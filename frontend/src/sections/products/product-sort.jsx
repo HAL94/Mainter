@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Iconify from '@/components/iconify';
 
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
@@ -7,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { listClasses } from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 

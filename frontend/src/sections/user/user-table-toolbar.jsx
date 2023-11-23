@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import Iconify from '@/components/iconify';
 
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 

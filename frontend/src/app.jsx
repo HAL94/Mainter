@@ -1,10 +1,10 @@
 /* eslint-disable perfectionist/sort-imports */
-import '@/global.css';
+import 'src/global.css';
 
-import { useScrollToTop } from '@/hooks/use-scroll-to-top';
+import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
-import Router from '@/routes';
-import AppProviders from '@/providers';
+import Router from 'src/routes';
+import AppProviders from 'src/providers';
 
 // ----------------------------------------------------------------------
 

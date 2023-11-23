@@ -1,16 +1,13 @@
 import PropTypes from 'prop-types';
-import { useUser } from '@/utils/auth';
 import { Navigate } from 'react-router-dom';
 
+import { useUser } from 'src/utils/auth';
 
 export default function PrivateRoute({ children }) {
   const user = useUser();
 
-  const isLoggedIn = user.isSuccess && user.data.data?.sub;
+  const isLoggedIn = user.isSuccess && user.data?.data?.sub; 
 
-  if (user.isFetching) {
-    return null;
-  }
 
   if (isLoggedIn) {
     return <>{children}</>;
