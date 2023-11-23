@@ -26,6 +26,7 @@ export class AuthController {
     delete payload.refreshToken;
     return {
       ...payload,
+      success: true,
     };
   }
 
@@ -77,6 +78,7 @@ export class AuthController {
     });
   }
 
+  @Public()
   @UseGuards(RtGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
