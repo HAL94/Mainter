@@ -4,10 +4,21 @@ import allTranslations from './translation';
 const getLabel = (lang, key) => {
   try {
     const translation = allTranslations[lang];
+    const parts = key.split('.');
 
-    return translation[key];
+    let word = null;
+    let access = {};
 
-  } catch (error) {    
+    Object.assign(access, translation);
+
+    parts.forEach((token) => {
+      access = access[token];
+    });
+
+    word = access;
+
+    return word || translation[key];
+  } catch (error) {
     return 'No translate';
   }
 };
@@ -16,7 +27,7 @@ export const isRTL = () => {
   const lang = localStorage.getItem('lang') || 'en';
 
   return languages[lang].isRtl;
-}
+};
 
 const useLanguage = () => {
   const lang = localStorage.getItem('lang') || 'en';

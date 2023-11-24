@@ -27,7 +27,7 @@ import { getAllClients } from 'src/api/clients';
 // ----------------------------------------------------------------------
 
 export default function AppView() {
-  const translate = useLanguage('ar');
+  const translate = useLanguage();
   
   const handleGettingClient = async () => {
     await getAllClients();

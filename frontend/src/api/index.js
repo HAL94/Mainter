@@ -34,7 +34,7 @@ API.interceptors.response.use(
         return axios(originalRequest);
         
       } catch (refError) {
-        console.log('could not refresh', refError);
+        // console.log('could not refresh', refError);
 
         const wasLoggedIn = localStorage.getItem('isLoggedIn') === 'true';        
         
@@ -58,7 +58,7 @@ API.interceptors.response.use(
 
 export const handleApiError = async (error) => {
   try {
-    console.log('got error', error);
+    // console.log('got error', error);
     const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
     const data = null;    
     return { error: errorMessage, data };
