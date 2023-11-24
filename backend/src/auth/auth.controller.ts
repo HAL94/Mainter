@@ -64,6 +64,7 @@ export class AuthController {
       });
     } catch (error) {
       console.log('wrong', error);
+      throw error;
     }
   }
 
