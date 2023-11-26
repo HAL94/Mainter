@@ -15,9 +15,33 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email    String  @unique
+  email    String   @unique
   hashed   String
   hashedRt String?
+  Client   Client[]
 
   @@map("users")
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner   User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+
+  fullName     String
+  businessName String?    @unique
+  mobile       String
+  code         Int        @default(autoincrement())
+  email        String     @unique
+  type         ClientType
+
+  @@map("clients")
+}
+
+enum ClientType {
+  INDIVIDUAL
+  BUSINESS
 }

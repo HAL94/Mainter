@@ -54,6 +54,10 @@ export class AuthService {
     const tokens = await this.getTokens(user.id, user.email);
     await this.updateRtHash(user.id, tokens.refresh_token);
 
+    if (this.config.get('NODE_ENV') === 'development') {
+      await new Promise((r) => setTimeout(r, 1000));
+    }
+
     return tokens;
   }
 
