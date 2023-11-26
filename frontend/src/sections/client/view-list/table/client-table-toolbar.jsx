@@ -7,11 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import useLanguage from 'src/locale/useLanguage';
+
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableToolbar({ numSelected, filterName, onFilterName }) {
+export default function ClientTableToolbar({ numSelected, filterName, onFilterName }) {
+  const translate = useLanguage();
   return (
     <Toolbar
       sx={{
@@ -33,7 +36,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder={translate('clients.searchClients')}
           startAdornment={
             <InputAdornment position="start">
               <Iconify
@@ -62,7 +65,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
   );
 }
 
-UserTableToolbar.propTypes = {
+ClientTableToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,

@@ -10,11 +10,37 @@ const lang = {
   passwordMin6Chars: 'كلمة المرور يجب أن تتكون من 6 عناصر كحد أدنى',
   emailValidFormat: 'حقل الإيميل يجب أن يكون بصيغة صحيحة',
   loginForm: {
-    success: 'نجحت العملية',
     successMessage: 'تم تسجيل الدخول بنجاح',
-    failure: 'فشلت العملية',
-    failMessage: 'حدث خطأ في العملية، تأكد من المدخلات'
-  }
+    failMessage: 'حدث خطأ في العملية، تأكد من المدخلات',
+  },
+  clients: {
+    pageTitle: 'العملاء',
+    newClient: 'إضافة عميل جديد',
+    searchClients: 'ابحث عن العملاء بالأسم',
+    addNewClient: 'إضافة عميل جديد',
+  },
+  clientForm: {
+    fullNameIsRequired: 'الأسم الكامل حقل مطلوب',
+    typeIsRequired: 'الحقل (نوعية العميل) مطلوب',
+    typeIsOneOrTwo: 'الحقل (نوعية العميل) يجب أن يكون (فرد أو شركة)',
+    label: {
+      fullName: 'الأسم الكامل',
+      businessName: 'اسم الشركة',
+      clientType: 'نوعية العميل',
+    },
+    individual: 'فرد',
+    business: 'شركة',
+  },
+  requiredField: 'الحقل مطلوب',
+  mobileNumber: 'الجوال',
+  mobileIsRequired: 'رقم الجوال حقل مطلوب',
+  mustBeSaudiNumber: 'يجب أن يكون الحقل رقم جوال سعودي صحيح',
+  submit: 'إضافة',
+  success: 'تمت العملية بنجاح',
+  failure: 'فشلت العملية',
+  failMessage: 'لقد حدث خطأ في النظام',
+  addIsDone: 'تمت إضافة البيانات',
+  addAnother: 'يمكنك المتابعة بإضافة بيانات إضافية',
 };
 
 export default lang;

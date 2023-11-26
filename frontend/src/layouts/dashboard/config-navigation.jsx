@@ -11,31 +11,40 @@ const navConfig = [
     title: 'dashboard',
     path: '/',
     icon: icon('ic_analytics'),
+    activeWhen: ['/']
   },
   {
-    title: 'user',
-    path: '/user',
+    title: 'clients',
+    path: '/clients',
     icon: icon('ic_user'),
+    activeWhen: ['/clients', '/clients/add']
   },
   {
     title: 'product',
     path: '/products',
     icon: icon('ic_cart'),
+    activeWhen: ['/products']
   },
   {
     title: 'blog',
     path: '/blog',
     icon: icon('ic_blog'),
+    activeWhen: ['/blog']
+
   },
   {
     title: 'login',
     path: '/login',
     icon: icon('ic_lock'),
+    activeWhen: ['/login']
+
   },
   {
     title: 'Not found',
     path: '/404',
     icon: icon('ic_disabled'),
+    activeWhen: ['/404']
+
   },
 ];
 

@@ -5,8 +5,8 @@ import { useUser } from 'src/utils/auth';
 
 export default function PublicRoute({ children }) {
   const user = useUser();
-
-  const isLoggedIn = user.isSuccess && user.data?.data?.sub;
+  
+  const isLoggedIn = user.isSuccess && user.data?.data?.success;
 
   if (user.isFetching) {
     return null;

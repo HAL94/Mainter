@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
 import { LoadingButton } from '@mui/lab';
-import { Link, Stack, IconButton, InputAdornment  } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment } from '@mui/material';
 
 import useLanguage from 'src/locale/useLanguage';
 
@@ -11,21 +11,22 @@ import Iconify from 'src/components/iconify';
 import FORM_FIELDS from './fields';
 import TextInputField from '../components/text-input-field';
 
-export default function LoginForm({ control, onSubmit, errors }) {
+export default function LoginForm({ control, onSubmit, errors, loading }) {
   const [showPassword, setShowPassword] = useState(false);
   const translate = useLanguage();
 
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={3}>
-        <TextInputField          
+        <TextInputField
           control={control}
           name={FORM_FIELDS.email}
           type="text"
           errors={errors}
-          required          
-          inputProps={{            
-            label: translate('emailAddress')
+          disabled={loading}
+          required
+          inputProps={{
+            label: translate('emailAddress'),
           }}
         />
 
@@ -34,7 +35,8 @@ export default function LoginForm({ control, onSubmit, errors }) {
           name={FORM_FIELDS.password}
           type={showPassword ? 'text' : 'password'}
           errors={errors}
-          required          
+          required
+          disabled={loading}
           inputProps={{
             label: translate('password'),
             InputProps: {
@@ -55,7 +57,7 @@ export default function LoginForm({ control, onSubmit, errors }) {
           </Link>
         </Stack>
 
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" color="inherit">
+        <LoadingButton loading={loading} fullWidth size="large" type="submit" variant="contained" color="inherit">
           {translate('login')}
         </LoadingButton>
       </Stack>
@@ -66,5 +68,6 @@ export default function LoginForm({ control, onSubmit, errors }) {
 LoginForm.propTypes = {
   control: PropTypes.object,
   onSubmit: PropTypes.func,
-  errors: PropTypes.object
+  errors: PropTypes.object,
+  loading: PropTypes.bool,
 };

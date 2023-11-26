@@ -10,11 +10,37 @@ const lang = {
   passwordMin6Chars: 'Password must be at least 6 characters',
   emailValidFormat: 'Email must be valid',
   loginForm: {
-    success: 'Success',
     successMessage: 'Successfully Logged in',
-    failure: 'Failure',
-    failMessage: 'Failed to Login, check your credentials'
-  }
+    failMessage: 'Failed to Login, check your credentials',
+  },
+  clients: {
+    pageTitle: 'Clients',
+    newClient: 'New Client',
+    searchClients: 'Search clients...',
+    addNewClient: 'Add New Client',
+  },
+  clientForm: {
+    fullNameIsRequired: 'Full Name is a Required Field',
+    typeIsRequired: 'Type is Required',
+    typeIsOneOrTwo: 'Type field must be an Individual or Business',
+    label: {
+      fullName: 'Full Name',
+      businessName: 'Business Name',
+      clientType: 'Type',
+    },
+    individual: 'Individual',
+    business: 'Business',
+  },
+  requiredField: 'Field is Required',
+  mobileNumber: 'Mobile Number',
+  mobileIsRequired: 'Mobile Number is Required',
+  mustBeSaudiNumber: 'Field must be a valid Saudi number',
+  submit: 'Submit',
+  success: 'Success',
+  failure: 'Failure',
+  failMessage: 'An error has occured, try again',
+  addIsDone: 'A new record is added',
+  addAnother: 'you can continue adding more',
 };
 
 export default lang;

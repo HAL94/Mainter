@@ -30,7 +30,7 @@ export default function LoginFormContainer({ onSubmitForm }) {
     mutationFn: signIn,
     mutationKey: ['sign-in'],
     onSuccess: (result) => {
-      console.log('result', result.error);      
+      console.log('result', result);      
       if (result.data?.success) {
         router.push('/');
         localStorage.setItem('isLoggedIn', true);
@@ -47,7 +47,7 @@ export default function LoginFormContainer({ onSubmitForm }) {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues,
-    mode: 'onTouched',
+    mode: 'onBlur',
   });
 
   const onSubmit = async (data) => {
@@ -71,17 +71,17 @@ export default function LoginFormContainer({ onSubmitForm }) {
     <>
       {!loading && isError && (
         <Alert sx={{ mb: 5 }} severity="error">
-          <AlertTitle>{translate('loginForm.failure')}</AlertTitle>
+          <AlertTitle>{translate('failure')}</AlertTitle>
           {translate('loginForm.failMessage')}
         </Alert>
       )}
       {!loading && success && !isError && (
         <Alert sx={{ mb: 5 }} severity="success">
-          <AlertTitle>{translate('loginForm.success')}</AlertTitle>
+          <AlertTitle>{translate('success')}</AlertTitle>
           {translate('loginForm.successMessage')}
         </Alert>
       )}
-      <LoginForm control={control} onSubmit={handleSubmit(onSubmit)} errors={errors} />
+      <LoginForm loading={loading} control={control} onSubmit={handleSubmit(onSubmit)} errors={errors} />
     </>
   );
 }

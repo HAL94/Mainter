@@ -12,11 +12,12 @@ import PrivateRoute from './components/private-route';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
-export const UserPage = lazy(() => import('src/pages/user'));
+export const ClientPage = lazy(() => import('src/pages/client'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const SessionExpiredPage = lazy(() => import('src/pages/session-expired'));
+export const AddClientPage = lazy(() => import('src/pages/add-client'));
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +38,8 @@ export default function Router() {
       ),
       children: [
         { element: <IndexPage />, index: true },
-        { path: 'user', element: <UserPage /> },
+        { path: 'clients', element: <ClientPage /> },
+        { path: 'clients/add', element: <AddClientPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

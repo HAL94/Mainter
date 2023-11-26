@@ -8,7 +8,12 @@ const languages = {
   
 export const Translate = (label) => {
   const lang = localStorage.getItem('lang') || 'en';
-  return languages[lang][label];
+  const parts = label.split('.');
+  let accessor = languages[lang]
+  parts.forEach(key => {
+    accessor = accessor[key]
+  });
+  return accessor;
 }
 
 export default languages;

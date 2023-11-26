@@ -19,7 +19,7 @@ export const signIn = async (formData) => {
       headers: {
         'Content-Type': 'application/json',
       },
-    });    
+    });
     return { error: null, data: res.data };
   } catch (error) {
     return handleApiError(error);
@@ -34,10 +34,6 @@ export const getMe = async () => {
       },
     });
 
-    if (res.data.success) {
-      localStorage.setItem('at_expiration', res.data.exp);
-    }
-
     return { error: null, data: res.data };
   } catch (error) {
     return handleApiError(error);
@@ -51,7 +47,7 @@ export const logout = async () => {
         'Content-Type': 'application/json',
       },
     });
-    localStorage.setItem('isLoggedIn', false); 
+    localStorage.setItem('isLoggedIn', false);
     return { error: null, data: res.data };
   } catch (error) {
     return handleApiError(error);

@@ -166,8 +166,13 @@ Nav.propTypes = {
 
 function NavItem({ item }) {
   const pathname = usePathname();
+  let active;
 
-  const active = item.path === pathname;
+  item.activeWhen.forEach(path => {
+    if (pathname === path) {
+      active = true;      
+    }
+  })
 
   return (
     <ListItemButton

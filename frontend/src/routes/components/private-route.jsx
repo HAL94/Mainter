@@ -6,8 +6,11 @@ import { useUser } from 'src/utils/auth';
 export default function PrivateRoute({ children }) {
   const user = useUser();
 
-  const isLoggedIn = user.isSuccess && user.data?.data?.sub; 
+  const isLoggedIn = user.isSuccess && user.data?.data?.success;
 
+  if (user.isLoading) {
+    return null;
+  }
 
   if (isLoggedIn) {
     return <>{children}</>;

@@ -32,23 +32,16 @@ API.interceptors.response.use(
         console.log('refresh success');
 
         return axios(originalRequest);
-        
       } catch (refError) {
         // console.log('could not refresh', refError);
 
-        const wasLoggedIn = localStorage.getItem('isLoggedIn') === 'true';        
-        
+        const wasLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
         if (wasLoggedIn) {
-
           history.navigate('/session-expired');
-
         } else {
-
           history.navigate('/login');
-          
         }
-
-
       }
     }
 
@@ -58,10 +51,9 @@ API.interceptors.response.use(
 
 export const handleApiError = async (error) => {
   try {
-    // console.log('got error', error);
-    const errorMessage = error.response?.data?.message || 'An unexpected error occurred.';
-    const data = null;    
-    return { error: errorMessage, data };
+    const errorMessage = error.response?.data?.result?.message || 'An unexpected error occurred.';
+    const data = null;
+    return { error: errorMessage, data, success: false };
   } catch (err) {
     throw new Error('An unexpected error occurred.');
   }
