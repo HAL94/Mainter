@@ -22,6 +22,9 @@ async function bootstrap() {
     origin,
   });
 
-  await app.listen(Number(process.env.PORT), '0.0.0.0');
+  await app.listen(
+    Number(process.env.PORT || configService.get('PORT')),
+    '0.0.0.0',
+  );
 }
 bootstrap();
