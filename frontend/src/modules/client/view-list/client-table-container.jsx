@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
@@ -13,60 +13,42 @@ import TablePagination from '@mui/material/TablePagination';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { clients } from 'src/_mock/client';
 import useLanguage from 'src/locale/useLanguage';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from './table/table-no-data';
+import columnLabels from './table/column-labels';
 import ClientTableRow from './table/client-table-row';
-import TableEmptyRows from './table/table-empty-rows';
 import ClientTableHead from './table/client-table-head';
 import ClientTableToolbar from './table/client-table-toolbar';
-import { emptyRows, applyFilter, getComparator } from '../utils';
+import TableLoadingSkeleton from './table/table-loading-skeleton';
 
 // ----------------------------------------------------------------------
 
-export default function ClientPage() {
-  const [page, setPage] = useState(0);
-
-  const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('name');
-
-  const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+export default function ClientPage({ data, dataCount, tableState, tableActions, loading }) {
+  const { page, query, rowsPerPage, selected } = tableState;
+  const { setPage, setRowsPerPage, setSelected, deleteModal } = tableActions;
 
   const router = useRouter();
 
   const translate = useLanguage();
 
-  const handleSort = (event, id) => {
-    const isAsc = orderBy === id && order === 'asc';
-    if (id !== '') {
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(id);
-    }
-  };
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = clients.map((n) => n.name);
+      const newSelecteds = data.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -80,27 +62,21 @@ export default function ClientPage() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleChangePage = (_event, newPage) => {
+    setPage(newPage + 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setPage(0);
+    setPage(1);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
+  const handleConfirmDelete = (row) => {
+    // console.log('should delete row', row);
+    deleteModal.setOpen([row.id]);
   };
 
-  const dataFiltered = applyFilter({
-    inputData: clients,
-    comparator: getComparator(order, orderBy),
-    filterName,
-  });
-
-  const notFound = !dataFiltered.length && !!filterName;
+  const emptyTable = !data.length && !!query;
 
   return (
     <Container>
@@ -120,64 +96,57 @@ export default function ClientPage() {
       </Stack>
 
       <Card>
-        <ClientTableToolbar
-          numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        />
-
+        <ClientTableToolbar />
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <ClientTableHead
-                order={order}
-                orderBy={orderBy}
-                rowCount={clients.length}
-                numSelected={selected.length}
-                onRequestSort={handleSort}
+                rowCount={data.length}
                 onSelectAllClick={handleSelectAllClick}
-                headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
-                  { id: '' },
-                ]}
+                columns={columnLabels}
               />
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
+              {loading ? (
+                <TableLoadingSkeleton skeletonLen={rowsPerPage} />
+              ) : (
+                <TableBody>
+                  {data.map((row) => (
                     <ClientTableRow
                       key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
+                      data={row}
+                      selected={selected.indexOf(row.id) !== -1}
+                      handleDeleteClick={() => handleConfirmDelete(row)}
+                      handleClick={(event) => handleClick(event, row.id)}
                     />
                   ))}
-
-                <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, clients.length)}
-                />
-
-                {notFound && <TableNoData query={filterName} />}
-              </TableBody>
+                  {emptyTable && <TableNoData query={query} />}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         </Scrollbar>
 
         <TablePagination
-          page={page}
+          page={page - 1}
           component="div"
-          count={clients.length}
+          count={dataCount}
           rowsPerPage={rowsPerPage}
+          SelectProps={{
+            disabled: loading,
+          }}
+          backIconButtonProps={
+            loading
+              ? {
+                  disabled: loading,
+                }
+              : undefined
+          }
+          nextIconButtonProps={
+            loading
+              ? {
+                  disabled: loading,
+                }
+              : undefined
+          }
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={handleChangeRowsPerPage}
@@ -188,3 +157,11 @@ export default function ClientPage() {
     </Container>
   );
 }
+
+ClientPage.propTypes = {
+  data: PropTypes.array,
+  dataCount: PropTypes.number,
+  tableState: PropTypes.object,
+  tableActions: PropTypes.object,
+  loading: PropTypes.bool,
+};

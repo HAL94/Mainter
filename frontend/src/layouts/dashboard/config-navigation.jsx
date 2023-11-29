@@ -17,7 +17,7 @@ const navConfig = [
     title: 'clients',
     path: '/clients',
     icon: icon('ic_user'),
-    activeWhen: ['/clients', '/clients/add']
+    activeWhen: ['/clients', '/clients/add', '/clients/edit']
   },
   {
     title: 'product',

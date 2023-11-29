@@ -169,7 +169,7 @@ function NavItem({ item }) {
   let active;
 
   item.activeWhen.forEach(path => {
-    if (pathname === path) {
+    if (pathname === path || pathname.includes(path)) {
       active = true;      
     }
   })

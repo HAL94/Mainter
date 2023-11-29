@@ -16,6 +16,7 @@ const lang = {
   clients: {
     pageTitle: 'العملاء',
     newClient: 'إضافة عميل جديد',
+    editClient: 'تعديل بيانات العميل',
     searchClients: 'ابحث عن العملاء بالأسم',
     addNewClient: 'إضافة عميل جديد',
   },
@@ -40,7 +41,10 @@ const lang = {
   failure: 'فشلت العملية',
   failMessage: 'لقد حدث خطأ في النظام',
   addIsDone: 'تمت إضافة البيانات',
+  updateIsDone: 'تم تعديل البيانات',
   addAnother: 'يمكنك المتابعة بإضافة بيانات إضافية',
+  chooseClientType: 'اختر نوعية العميل',
+  anyClientType: 'الكل',
 };
 
 export default lang;

@@ -7,22 +7,29 @@ import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
+import { currentLocal } from 'src/locale/translation';
+import { useClientListContext } from 'src/providers/client-view-list';
+
 import { visuallyHidden } from '../../utils';
 
 // ----------------------------------------------------------------------
 
-export default function ClientTableHead({
-  order,
-  orderBy,
-  rowCount,
-  headLabel,
-  numSelected,
-  onRequestSort,
-  onSelectAllClick,
-}) {
-  const onSort = (property) => (event) => {
-    onRequestSort(event, property);
+export default function ClientTableHead({ rowCount, columns, onSelectAllClick }) {
+  const { state, actions } = useClientListContext();
+  const { order, orderBy, selected } = state;
+  const { setOrder, setOrderBy } = actions;
+
+  const numSelected = selected.length;
+
+  const onSort = (property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    if (property !== '') {
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property);
+    }
   };
+
+  const local = currentLocal();
 
   return (
     <TableHead>
@@ -35,7 +42,7 @@ export default function ClientTableHead({
           />
         </TableCell>
 
-        {headLabel.map((headCell) => (
+        {columns.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.align || 'left'}
@@ -46,9 +53,9 @@ export default function ClientTableHead({
               hideSortIcon
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={onSort(headCell.id)}
+              onClick={() => onSort(headCell.id)}
             >
-              {headCell.label}
+              {headCell?.label?.[local]}
               {orderBy === headCell.id ? (
                 <Box sx={{ ...visuallyHidden }}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -63,11 +70,11 @@ export default function ClientTableHead({
 }
 
 ClientTableHead.propTypes = {
-  order: PropTypes.oneOf(['asc', 'desc']),
-  orderBy: PropTypes.string,
+  // order: PropTypes.oneOf(['asc', 'desc']),
+  // orderBy: PropTypes.string,
   rowCount: PropTypes.number,
-  headLabel: PropTypes.array,
-  numSelected: PropTypes.number,
-  onRequestSort: PropTypes.func,
+  columns: PropTypes.array,
+  // numSelected: PropTypes.number,
+  // onRequestSort: PropTypes.func,
   onSelectAllClick: PropTypes.func,
 };

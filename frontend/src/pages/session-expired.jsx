@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import SessionExpiredView from 'src/sections/session-expired';
+import SessionExpiredView from 'src/modules/session-expired';
 
 // ----------------------------------------------------------------------
 

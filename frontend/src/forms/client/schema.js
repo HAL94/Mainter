@@ -14,9 +14,10 @@ export default yup
       .string()
       .required(Translate('clientForm.typeIsRequired'))
       .oneOf(['INDIVIDUAL', 'BUSINESS'], Translate('clientForm.typeIsOneOrTwo')),
-    businessName: yup.string().when('type', {
-      is: (val) => val === 'BUSINESS',
-      then: (schema) => schema.required(Translate('requiredField')),
-    }),
+    businessName: yup.string()
+      .when('type', {
+        is: (val) => val === 'BUSINESS',
+        then: (schema) => schema.required(Translate('requiredField')),
+      })    
   })
   .required();

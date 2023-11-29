@@ -16,6 +16,7 @@ const lang = {
   clients: {
     pageTitle: 'Clients',
     newClient: 'New Client',
+    editClient: 'Edit Client',
     searchClients: 'Search clients...',
     addNewClient: 'Add New Client',
   },
@@ -40,7 +41,10 @@ const lang = {
   failure: 'Failure',
   failMessage: 'An error has occured, try again',
   addIsDone: 'A new record is added',
+  updateIsDone: 'Record has been updated',
   addAnother: 'you can continue adding more',
+  chooseClientType: 'Choose Type',
+  anyClientType: 'Any'
 };
 
 export default lang;
