@@ -7,10 +7,14 @@ export const handleApiError = (error: any): AppResponse<any> => {
   let message = error?.message || 'Something Went Wrong!';
   const data = null;
 
+  console.log(error);
+
   if (error instanceof PrismaClientKnownRequestError) {
     status = HttpStatus.CONFLICT;
     message = 'Data entered is invalid';
   }
+
+  console.log('error', error);
 
   return {
     success: false,
