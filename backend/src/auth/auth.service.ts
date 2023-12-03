@@ -8,6 +8,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import { JwtPayload, Tokens } from './types';
 import { Response } from 'express';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
   async signupLocal(dto: AuthDto): Promise<boolean> {
     const hash = await argon.hash(dto.password);
 
-    await this.prisma.user
+    const user = await this.prisma.user
       .create({
         data: {
           email: dto.email,
@@ -35,6 +36,8 @@ export class AuthService {
         }
         throw error;
       });
+
+    await this.createApp(user);
 
     return true;
   }
@@ -92,7 +95,7 @@ export class AuthService {
   }
 
   async getTokens(userId: number, email: string): Promise<Tokens> {
-    const jwtPayload: JwtPayload = {
+    const jwtPayload: Partial<JwtPayload> = {
       sub: userId,
       email: email,
     };
@@ -140,5 +143,17 @@ export class AuthService {
 
   clearTokenCookie(type: 'rt' | 'at', res: Response) {
     res.clearCookie(type);
+  }
+
+  async createApp(user: User) {
+    try {
+      await this.prisma.app.create({
+        data: {
+          userId: user.id,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 }

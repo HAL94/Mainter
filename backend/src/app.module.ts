@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ClientModule } from './client/client.module';
 import { AtGuard } from './common/guards';
+import { VehicleModule } from './vehicle/vehicle.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { AtGuard } from './common/guards';
     AuthModule,
     PrismaModule,
     ClientModule,
+    VehicleModule,
   ],
   providers: [
     {
@@ -22,5 +25,6 @@ import { AtGuard } from './common/guards';
       useClass: AtGuard,
     },
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

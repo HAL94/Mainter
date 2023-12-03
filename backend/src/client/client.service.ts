@@ -2,54 +2,17 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-
-// dev deps
-import { sample } from 'lodash';
-import { faker } from '@faker-js/faker';
-import { PageDto } from './dto';
+import { ClientPageDto } from './dto';
 import { DeleteClientDto } from './dto/delete-client.dto';
-import { GetClientDto } from './dto/get-one-client.dto';
+
 import { UpdateClientDto } from './dto/update-client.dto';
-
-const clientSeedData = () => {
-  return [...Array(24)].map(() => {
-    const sampleData: any = {
-      fullName: faker.person.fullName(),
-      mobile: faker.phone.number(),
-      type: sample(['BUSINESS', 'INDIVIDUAL']),
-      code: faker.number.int(),
-      email: faker.internet.email(),
-      ownerId: 1,
-    };
-
-    sampleData.businessName =
-      sampleData.type === 'BUSINESS' ? faker.company.name() : null;
-
-    return sampleData;
-  });
-};
-// const clientMockData = () =>
-//   [...Array(24)].map(() => {
-//     const sampleData: Partial<Client> = {
-//       id: faker.number.int(),
-//       fullName: faker.person.fullName(),
-//       mobile: faker.phone.number(),
-//       type: sample(['BUSINESS', 'INDIVIDUAL']),
-//       code: faker.number.int(),
-//       email: faker.internet.email(),
-//     };
-
-//     sampleData.businessName =
-//       sampleData.type === 'BUSINESS' ? faker.company.name() : '-';
-
-//     return sampleData;
-//   });
+import { GetIdDto } from 'src/common/dto/get-id.dto';
 
 @Injectable()
 export class ClientService {
   constructor(private prisma: PrismaService, private config: ConfigService) {}
 
-  async getAllClients(pageInfo: PageDto, userId: number) {
+  async getAllClients(pageInfo: ClientPageDto, appId: string) {
     console.log('pageInfo', pageInfo);
     const {
       pageNo,
@@ -65,8 +28,8 @@ export class ClientService {
     // const filterCriteria = ;
 
     const filteration: any = {
-      ownerId: {
-        equals: userId,
+      appId: {
+        equals: appId,
       },
       OR: [
         { email: { contains: query, mode: 'insensitive' } },
@@ -109,7 +72,7 @@ export class ClientService {
     };
   }
 
-  async addClient(clientData: CreateClientDto, userId: number) {
+  async addClient(clientData: CreateClientDto, appId: string) {
     try {
       const foundExisting = await this.prisma.client.findUnique({
         where: {
@@ -130,7 +93,7 @@ export class ClientService {
 
       return await this.prisma.client.create({
         data: {
-          ownerId: userId,
+          appId,
           ...clientData,
         },
       });
@@ -139,11 +102,11 @@ export class ClientService {
     }
   }
 
-  async remove(clientData: DeleteClientDto, userId: number) {
+  async remove(clientData: DeleteClientDto, appId: string) {
     try {
       const foundExisting = await this.prisma.client.findMany({
         where: {
-          ownerId: userId,
+          appId,
           AND: [
             {
               id: { in: clientData.ids },
@@ -173,10 +136,10 @@ export class ClientService {
     }
   }
 
-  async getOneClient(getClient: GetClientDto, userId: number) {
+  async getOneClient(getClient: GetIdDto, appId: string) {
     try {
       const found = await this.prisma.client.findFirst({
-        where: { ownerId: userId, AND: [{ id: Number(getClient.id) }] },
+        where: { appId, AND: [{ id: Number(getClient.id) }] },
       });
 
       if (!found) {
@@ -192,12 +155,12 @@ export class ClientService {
     }
   }
 
-  async updateOne(editedClient: UpdateClientDto, userId: number) {
+  async updateOne(editedClient: UpdateClientDto, appId: string) {
     try {
       console.log('body payload', editedClient);
 
       const found = await this.prisma.client.findFirst({
-        where: { ownerId: userId, AND: [{ id: editedClient.id }] },
+        where: { appId, AND: [{ id: editedClient.id }] },
       });
 
       if (!found) {
@@ -217,17 +180,6 @@ export class ClientService {
           id: id,
         },
         data: rest,
-      });
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async seedClients() {
-    try {
-      await this.prisma.client.deleteMany({});
-      await this.prisma.client.createMany({
-        data: clientSeedData(),
       });
     } catch (error) {
       throw error;

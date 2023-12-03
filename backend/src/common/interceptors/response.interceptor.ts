@@ -33,6 +33,8 @@ export class ResponseInterceptor implements NestInterceptor {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    console.log('exception', exception);
+
     const result = {
       success: false,
       statusCode: status,

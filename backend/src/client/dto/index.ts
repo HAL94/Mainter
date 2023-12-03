@@ -1,2 +1,2 @@
-export * from './page.dto';
+export * from './client-page.dto';
 export * from './create-client.dto';

@@ -1,42 +1,41 @@
 import {
   Controller,
-  Get,
+  Body,
+  Post,
   HttpCode,
   HttpStatus,
-  Post,
-  Query,
-  Body,
+  Get,
   Param,
+  Query,
 } from '@nestjs/common';
-import { ClientService } from './client.service';
-import { ClientPageDto } from './dto';
-import { CreateClientDto } from './dto/create-client.dto';
-
-import { handleApiError } from 'src/common/handle-error';
-import AppResponse from 'src/common/app-response';
-import { DeleteClientDto } from './dto/delete-client.dto';
-import { Client } from '@prisma/client';
-import { UpdateClientDto } from './dto/update-client.dto';
+import { VehicleService } from './vehicle.service';
 import { GetCurrentAppId } from 'src/common/decorators/get-current-app-id.decorator';
+import { handleApiError } from 'src/common/handle-error';
+import { ClientVehicle } from '@prisma/client';
+import AppResponse from 'src/common/app-response';
+import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { GetIdDto } from 'src/common/dto/get-id.dto';
+import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { DeleteVehicleDto } from './dto/delete-vehicle.dto';
+import { PageDto } from 'src/common/dto/page.dto';
 
-@Controller('clients')
-export class ClientController {
-  constructor(private clientService: ClientService) {}
+@Controller('vehicles')
+export class VehicleController {
+  constructor(private vehicles: VehicleService) {}
 
   @Get('/')
   @HttpCode(HttpStatus.OK)
   async findAll(
-    @Query() pageInfo: ClientPageDto,
+    @Query() pageInfo: PageDto,
     @GetCurrentAppId() appId: string,
   ): Promise<AppResponse<any>> {
     try {
-      const data = await this.clientService.getAllClients(pageInfo, appId);
+      const data = await this.vehicles.getAllVehicles(pageInfo, appId);
 
       return {
         success: true,
         error: null,
-        message: 'clients retrieved',
+        message: 'vehicles retrieved',
         data,
       };
     } catch (error) {
@@ -47,17 +46,16 @@ export class ClientController {
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   async findOne(
-    @Param() getOneInfo: GetIdDto,
     @GetCurrentAppId() appId: string,
-  ): Promise<AppResponse<any>> {
+    @Param() data: GetIdDto,
+  ): Promise<AppResponse<ClientVehicle>> {
     try {
-      const data = await this.clientService.getOneClient(getOneInfo, appId);
-
+      const result = await this.vehicles.getOneVehicle(data, appId);
       return {
         success: true,
         error: null,
-        message: `got client with id: ${data.id}`,
-        data,
+        message: `got vehicle with id: ${data.id}`,
+        data: result,
       };
     } catch (error) {
       return handleApiError(error);
@@ -67,16 +65,16 @@ export class ClientController {
   @Post('/')
   @HttpCode(HttpStatus.CREATED)
   async createOne(
-    @Body() clientData: CreateClientDto,
     @GetCurrentAppId() appId: string,
-  ): Promise<AppResponse<any>> {
+    @Body() data: CreateVehicleDto,
+  ): Promise<AppResponse<ClientVehicle>> {
     try {
-      const result = await this.clientService.addClient(clientData, appId);
+      const result = await this.vehicles.addVehicle(data, appId);
       return {
         success: true,
         data: result,
         error: null,
-        message: 'Created Client Successfully',
+        message: 'Created Vehicle Successfully',
       };
     } catch (error) {
       return handleApiError(error);
@@ -86,11 +84,11 @@ export class ClientController {
   @Post('/update')
   @HttpCode(HttpStatus.OK)
   async updateOne(
-    @Body() clientData: UpdateClientDto,
+    @Body() vehicleData: UpdateVehicleDto,
     @GetCurrentAppId() appId: string,
   ) {
     try {
-      return await this.clientService.updateOne(clientData, appId);
+      return await this.vehicles.updateOne(vehicleData, appId);
     } catch (error) {
       return handleApiError(error);
     }
@@ -99,13 +97,13 @@ export class ClientController {
   @Post('/delete')
   @HttpCode(HttpStatus.OK)
   async deleteOne(
-    @Body() clientData: DeleteClientDto,
+    @Body() vehicleData: DeleteVehicleDto,
     @GetCurrentAppId() appId: string,
-  ): Promise<AppResponse<Client>> {
+  ): Promise<AppResponse<ClientVehicle>> {
     try {
-      const deleted = await this.clientService.remove(clientData, appId);
+      const deleted = await this.vehicles.remove(vehicleData, appId);
 
-      const message = `Successfully deleted client records with ids: [${deleted
+      const message = `Successfully deleted vehicle records with ids: [${deleted
         .map((r) => r.id)
         .join(', ')}]`;
 
