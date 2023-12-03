@@ -7,14 +7,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 
-export default function DeleteClientDialog({
-  open,
-  handleClose,
-  loading,
-  title,
-  content,
-  actions,
-}) {
+import { isRTL } from 'src/locale/useLanguage';
+
+export default function CustomDialog({ open, handleClose, loading, title, content, actions }) {
   return (
     <Dialog
       open={open}
@@ -30,12 +25,14 @@ export default function DeleteClientDialog({
           <CircularProgress />
         )}
       </DialogContent>
-      <DialogActions>{actions}</DialogActions>
+      <DialogActions sx={{ justifyContent: isRTL() ? 'flex-start' : 'flex-end' }}>
+        {actions}
+      </DialogActions>
     </Dialog>
   );
 }
 
-DeleteClientDialog.propTypes = {
+CustomDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
   title: PropTypes.string,

@@ -26,13 +26,13 @@ import TableLoadingSkeleton from 'src/components/table-loading-skeleton';
 
 import TableNoData from './table/table-no-data';
 import columnLabels from './table/column-labels';
-import ClientTableRow from './table/client-table-row';
-import ClientTableHead from './table/client-table-head';
-import ClientTableToolbar from './table/client-table-toolbar';
+import VehicleTableRow from './table/vehicle-table-row';
+import VehicleTableHead from './table/vehicle-table-head';
+import VehicleTableToolbar from './table/vehicle-table-toolbar';
 
 // ----------------------------------------------------------------------
 
-export default function ClientPage({ data, dataCount, tableState, tableActions, loading }) {
+export default function VehicleTableContainer({ data, dataCount, tableState, tableActions, loading }) {
   const { page, query, rowsPerPage, selected } = tableState;
   const { setPage, setRowsPerPage, setSelected, deleteModal } = tableActions;
 
@@ -86,26 +86,26 @@ export default function ClientPage({ data, dataCount, tableState, tableActions, 
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">{translate('clients.pageTitle')}</Typography>
+        <Typography variant="h4">{translate('vehicles.pageTitle')}</Typography>
 
         <Button
           onClick={() => {
-            router.push('/clients/add');
+            router.push('/vehicles/add');
           }}
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
-          {translate('clients.newClient')}
+          {translate('vehicles.newVehicle')}
         </Button>
       </Stack>
 
       <Card>
-        <ClientTableToolbar />
+        <VehicleTableToolbar />
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
-              <ClientTableHead
+              <VehicleTableHead
                 rowCount={data.length}
                 onSelectAllClick={handleSelectAllClick}
                 columns={columnLabels}
@@ -115,7 +115,7 @@ export default function ClientPage({ data, dataCount, tableState, tableActions, 
               ) : (
                 <TableBody>
                   {data.map((row) => (
-                    <ClientTableRow
+                    <VehicleTableRow
                       key={row.id}
                       data={row}
                       selected={selected.indexOf(row.id) !== -1}
@@ -167,7 +167,7 @@ export default function ClientPage({ data, dataCount, tableState, tableActions, 
   );
 }
 
-ClientPage.propTypes = {
+VehicleTableContainer.propTypes = {
   data: PropTypes.array,
   dataCount: PropTypes.number,
   tableState: PropTypes.object,

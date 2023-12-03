@@ -5,29 +5,29 @@ import { useQuery } from '@tanstack/react-query';
 
 import { CircularProgress } from '@mui/material';
 
-import { getOneClient } from 'src/api/clients';
-import ClientEditView from 'src/modules/client/edit';
+import { getOneVehicle } from 'src/api/vehicles';
+import VehicleEditView from 'src/modules/vehicle/edit';
 
-export default function EditClientPage() {
+export default function EditVehiclePage() {
   const params = useParams();
   const { id } = params;
 
   const { data: result, isFetching } = useQuery({
-    queryKey: ['get-client', id],
-    queryFn: () => getOneClient(id),
+    queryKey: ['get-vehicle', id],
+    queryFn: () => getOneVehicle(id),
   });
 
   if (isFetching) {
     return <CircularProgress />;
   }
   if (result.success) {
-    return <ClientEditView data={result?.data?.data} />;
+    return <VehicleEditView data={result?.data?.data} />;
   }
 
   return (
     <>
       <Helmet>
-        <title> Edit Client | Mainter </title>
+        <title> Edit Vehicle | Mainter </title>
       </Helmet>
 
       <div>Could not find client record with id: {id} </div>

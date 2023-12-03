@@ -3,8 +3,7 @@ import * as actionTypes from './types';
 export const initialState = {
   page: 1,
   rowsPerPage: 5,
-  query: '',
-  type: '',
+  query: '', 
   order: 'desc',
   orderBy: 'createdAt',
   selected: [],
@@ -25,11 +24,6 @@ export function contextReducer(state, action) {
       return {
         ...state,
         rowsPerPage: action.payload,
-      };
-    case actionTypes.SET_TYPE:
-      return {
-        ...state,
-        type: action.payload,
       };
     case actionTypes.SET_QUERY:
       return {

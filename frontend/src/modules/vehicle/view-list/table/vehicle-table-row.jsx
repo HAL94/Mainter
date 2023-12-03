@@ -18,8 +18,8 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function ClientTableRow({ selected, data, handleClick, handleDeleteClick }) {
-  const { id, fullName, mobile, email, type, businessName } = data;
+export default function VehicleTableRow({ selected, data, handleClick, handleDeleteClick }) {
+  const { id, make, model, plate, year, client, engineNo } = data;
   const translate = useLanguage();
 
   const [open, setOpen] = useState(null);
@@ -44,18 +44,20 @@ export default function ClientTableRow({ selected, data, handleClick, handleDele
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="subtitle2" noWrap>
-              {fullName}
+              {make}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{mobile}</TableCell>
+        <TableCell>{model}</TableCell>
 
-        <TableCell>{type}</TableCell>
+        <TableCell>{plate}</TableCell>
 
-        <TableCell align="center">{businessName}</TableCell>
+        <TableCell align="center">{year}</TableCell>
 
-        <TableCell>{email}</TableCell>
+        <TableCell align="center">{engineNo}</TableCell>
+
+        <TableCell>{client.fullName}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -76,7 +78,7 @@ export default function ClientTableRow({ selected, data, handleClick, handleDele
       >
         <MenuItem
           onClick={() => {
-            router.push(`/clients/edit/${id}`);
+            router.push(`/vehicles/edit/${id}`);
           }}
         >
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
@@ -98,7 +100,7 @@ export default function ClientTableRow({ selected, data, handleClick, handleDele
   );
 }
 
-ClientTableRow.propTypes = {
+VehicleTableRow.propTypes = {
   data: PropTypes.object,
   handleClick: PropTypes.func,
   selected: PropTypes.any,

@@ -2,14 +2,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '@mui/material';
 
-import { deleteClients } from 'src/api/clients';
 import useLanguage from 'src/locale/useLanguage';
-import { useClientListContext } from 'src/providers/client-view-list';
+import { deleteVehicles } from 'src/api/vehicles';
+import { useVehicleListContext } from 'src/providers/vehicle-view-list';
 
 import CustomDialog from 'src/components/custom-dialog';
 
-export default function DeleteClientDialog() {
-  const { selectors, actions } = useClientListContext();
+export default function DeleteVehicleDialog() {
+  const { selectors, actions } = useVehicleListContext();
   const { deleteModal, setSelected } = actions;
   const { open, data: modalData } = selectors.deleteModalOpen();
   const queryClient = useQueryClient();
@@ -22,11 +22,11 @@ export default function DeleteClientDialog() {
     data: result,
     reset,
   } = useMutation({
-    mutationKey: ['delete-clients'],
-    mutationFn: () => deleteClients({ ids: modalData }),
+    mutationKey: ['delete-vehicles'],
+    mutationFn: () => deleteVehicles({ ids: modalData }),
     onSuccess: (response) => {
       if (response.success) {
-        queryClient.invalidateQueries(['get-all-clients']);
+        queryClient.invalidateQueries(['get-all-vehicles']);
         if (modalData.length > 1) {
           setSelected([]);
         }
@@ -78,7 +78,12 @@ export default function DeleteClientDialog() {
           <Button sx={{ color: 'primary.main' }} disabled={loading} onClick={deleteModal.setClose}>
             {translate('deleteModalCancel')}
           </Button>
-          <Button sx={{ color: 'error.main' }} variant='success' disabled={loading} onClick={mutate}>
+          <Button
+            sx={{ color: 'error.main' }}
+            variant="success"
+            disabled={loading}
+            onClick={mutate}
+          >
             {translate('deleteModalConfirm')}
           </Button>
         </>

@@ -2,22 +2,34 @@ import { API, handleApiError } from '.';
 
 export const getAllClients = async (data) => {
   try {
-    const { pageNo, pageSize, query, type, order, orderBy } = data;
+    const uri = '/clients';
 
-    let uri = `/clients?pageNo=${pageNo}&pageSize=${pageSize}&query=${query}&order=${order}&orderBy=${orderBy}`;
+    const params = new URLSearchParams();
 
-    if (type !== '') {
-      uri += `&type=${type}`;
-    }
+    Object.entries(data).forEach((entry) => {
+      const [key, value] = entry;
+      if (key && value) {
+        console.log(key, String(value));
+        params.append(key, String(value));
+      }
+    });
 
-    // console.log('data', data, 'uri', uri);
-    const res = await API.get(uri, {
+    const url = new URL(API.getUri() + uri);
+
+    url.search = params;
+
+    await new Promise((r) => setTimeout(r, 1000));
+
+    const res = await API.get(url.href, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
+
+    // console.log('data', res.data.result.data)
     return { error: null, data: res.data.result.data, success: true };
   } catch (error) {
+    console.log('error', error);
     return handleApiError(error);
   }
 };
@@ -60,7 +72,7 @@ export const getOneClient = async (data) => {
   } catch (error) {
     return handleApiError(error);
   }
-}
+};
 
 export const editClient = async (data) => {
   try {
@@ -73,4 +85,4 @@ export const editClient = async (data) => {
   } catch (error) {
     return handleApiError(error);
   }
-}
+};

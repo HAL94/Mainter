@@ -1,15 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Card, Stack, Container, Typography } from '@mui/material';
+import { Card, Link, Stack, Container, Typography, Breadcrumbs } from '@mui/material';
 
-import useLanguage from 'src/locale/useLanguage';
-import EditClientFormContainer from 'src/forms/client/edit';
+import EditClientForm from 'src/forms/client/edit';
+import useLanguage, { isRTL } from 'src/locale/useLanguage';
+
+import Iconify from 'src/components/iconify';
 
 export default function ClientEditView({ data }) {
   const translate = useLanguage();
   return (
     <Container>
+      <Breadcrumbs aria-label="breadcrumb" mb={4}>
+        <Link underline="hover" color="inherit" href="/clients" sx={{ display: 'flex', gap: 1 }}>
+          <Iconify icon={isRTL() ? 'eva:arrow-forward-outline' : 'eva:arrow-back-outline'} />
+          {translate('clients.pageTitle')}
+        </Link>
+        <Typography color="text.primary">
+          {translate('edit')} {data.fullName}
+        </Typography>
+      </Breadcrumbs>
+
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">{translate('clients.editClient')}</Typography>
       </Stack>
@@ -21,7 +33,7 @@ export default function ClientEditView({ data }) {
             width: 1,
           }}
         >
-          <EditClientFormContainer data={data} />
+          <EditClientForm data={data} />
         </Card>
       </Stack>
     </Container>

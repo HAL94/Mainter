@@ -13,7 +13,11 @@ import schema from './schema';
 import ClientForm from './form';
 import { defaultValues } from './fields';
 
-export default function AddClientFormContainer({ onSubmitCb }) {
+export default function AddClientForm({
+  onSubmitCb,
+  onSuccessCb,
+  disableFeedback = false,
+}) {
   const [isError, setIsError] = useState(false);
 
   const {
@@ -28,6 +32,9 @@ export default function AddClientFormContainer({ onSubmitCb }) {
       if (!result.success) {
         setIsError(true);
       } else {
+        if (onSuccessCb) {
+          onSuccessCb(result);
+        }
         resetForm();
       }
     },
@@ -49,13 +56,17 @@ export default function AddClientFormContainer({ onSubmitCb }) {
 
   const onSubmit = (data) => {
     setIsError(null);
-    
+
     if (!isValid) {
       return;
     }
     if (typeof onSubmitCb === 'function' && onSubmitCb) {
       onSubmitCb(data);
       return;
+    }
+
+    if (data.type === 'INDIVIDUAL') {
+      data.businessName = null;
     }
 
     mutate({ ...data });
@@ -66,7 +77,7 @@ export default function AddClientFormContainer({ onSubmitCb }) {
     setIsError(null);
   };
 
-  return (
+  const feedbackContent = disableFeedback ? null : (
     <>
       {!loading && isSuccess && !isError && (
         <Alert sx={{ mb: 5 }} severity="success" onClose={onReset}>
@@ -80,17 +91,26 @@ export default function AddClientFormContainer({ onSubmitCb }) {
           {translate('failMessage')}
         </Alert>
       )}
+    </>
+  );
+
+  return (
+    <>
+      {feedbackContent}
       <ClientForm
         loading={loading}
         errors={errors}
         control={control}
         watch={watch}
         onSubmit={handleSubmit(onSubmit)}
+        submitLabel={translate('submit')}
       />
     </>
   );
 }
 
-AddClientFormContainer.propTypes = {
+AddClientForm.propTypes = {
   onSubmitCb: PropTypes.func,
+  onSuccessCb: PropTypes.func,
+  disableFeedback: PropTypes.bool,
 };

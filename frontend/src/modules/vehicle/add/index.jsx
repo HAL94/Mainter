@@ -2,26 +2,36 @@ import React from 'react';
 
 import { Card, Link, Stack, Container, Typography, Breadcrumbs } from '@mui/material';
 
-import AddClientForm from 'src/forms/client/add';
+import { useRouter } from 'src/routes/hooks';
+
+import AddVehicleForm from 'src/forms/vehicle/add';
 import useLanguage, { isRTL } from 'src/locale/useLanguage';
 
 import Iconify from 'src/components/iconify';
 
-export default function ClientAddView() {
+export default function VehicleAddView() {
   const translate = useLanguage();
-  
+  const router = useRouter();
+
   return (
     <Container>
       <Breadcrumbs aria-label="breadcrumb" mb={4}>
-        <Link underline="hover" color="inherit" href="/clients" sx={{ display: 'flex', gap: 1 }}>
+        <Link
+          underline="hover"
+          color="inherit"
+          sx={{ display: 'flex', gap: 1, cursor: 'pointer' }}
+          onClick={() => {
+            router.push('/vehicles');
+          }}
+        >
           <Iconify icon={isRTL() ? 'eva:arrow-forward-outline' : 'eva:arrow-back-outline'} />
-          {translate('clients.pageTitle')}
+          {translate('vehicles.pageTitle')}
         </Link>
-        <Typography color="text.primary">{translate('clients.addNewClient')}</Typography>
+        <Typography color="text.primary">{translate('vehicles.addNewVehicle')}</Typography>
       </Breadcrumbs>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">{translate('clients.addNewClient')}</Typography>
+        <Typography variant="h4">{translate('vehicles.addNewVehicle')}</Typography>
       </Stack>
 
       <Stack alignItems="center" justifyContent="center">
@@ -31,7 +41,7 @@ export default function ClientAddView() {
             width: 1,
           }}
         >
-          <AddClientForm />
+          <AddVehicleForm />
         </Card>
       </Stack>
     </Container>

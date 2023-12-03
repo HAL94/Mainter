@@ -11,7 +11,7 @@ import FORM_FIELDS from './fields';
 import TextInputField from '../components/text-input-field';
 import SelectInputField from '../components/select-input-field';
 
-export default function ClientForm({ control, onSubmit, errors, watch, loading }) {
+export default function ClientForm({ control, onSubmit, errors, watch, loading, submitLabel }) {
   const translate = useLanguage();
   const typeWatch = watch(FORM_FIELDS.type);
   return (
@@ -90,7 +90,7 @@ export default function ClientForm({ control, onSubmit, errors, watch, loading }
           variant="contained"
           color="inherit"
         >
-          {translate('submit')}
+          {submitLabel}
         </LoadingButton>
       </Stack>
     </form>
@@ -103,4 +103,5 @@ ClientForm.propTypes = {
   errors: PropTypes.object,
   watch: PropTypes.func,
   loading: PropTypes.bool,
+  submitLabel: PropTypes.string,
 };

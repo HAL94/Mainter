@@ -168,8 +168,8 @@ function NavItem({ item }) {
   const pathname = usePathname();
   let active;
 
-  item.activeWhen.forEach(path => {
-    if (pathname === path || pathname.includes(path)) {
+  item.activeWhen.forEach(pathReg => {
+    if (pathReg.test(pathname)) {
       active = true;      
     }
   })

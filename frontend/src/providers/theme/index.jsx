@@ -5,6 +5,7 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import { useMemo, useEffect } from 'react';
 import { CacheProvider } from '@emotion/react';
 
+import { arEG, enUS } from '@mui/material/locale';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
 
@@ -25,33 +26,36 @@ export default function ThemeProvider({ children }) {
       typography,
       shadows: shadows(),
       customShadows: customShadows(),
-      shape: { borderRadius: 8 }      
+      shape: { borderRadius: 8 },
     }),
     []
   );
 
-  useEffect(() => {    
+  useEffect(() => {
     document.dir = isRTL() ? 'rtl' : 'ltr';
-  }, [])
+  }, []);
 
-  const theme = createTheme({
-    ...memoizedValue, 
-    direction: isRTL() ? 'rtl' : 'ltr',
-    typography: {
-      ...typography,
-      fontFamily: isRTL() ? "'Cairo', sans-serif" : typography.fontFamily
-    }
-  });
+  const theme = createTheme(
+    {
+      ...memoizedValue,
+      direction: isRTL() ? 'rtl' : 'ltr',
+      typography: {
+        ...typography,
+        fontFamily: isRTL() ? "'Cairo', sans-serif" : typography.fontFamily,
+      },
+    },
+    isRTL() ? arEG : enUS
+  );
 
   theme.components = overrides(theme);
 
   const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [prefixer, rtlPlugin],
-  })
+  });
 
   const emptyCache = createCache({
-    key: "meaningless-key",
+    key: 'meaningless-key',
   });
 
   return (

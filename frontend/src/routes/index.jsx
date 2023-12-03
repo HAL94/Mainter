@@ -13,12 +13,15 @@ import PrivateRoute from './components/private-route';
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const ClientPage = lazy(() => import('src/pages/client'));
+export const VehiclePage = lazy(() => import('src/pages/vehicle'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const SessionExpiredPage = lazy(() => import('src/pages/session-expired'));
 export const AddClientPage = lazy(() => import('src/pages/add-client'));
+export const AddVehiclePage = lazy(() => import('src/pages/add-vehicle'));
 export const EditClientPage = lazy(() => import('src/pages/edit-client'));
+export const EditVehiclePage = lazy(() => import('src/pages/edit-vehicle'));
 
 // ----------------------------------------------------------------------
 
@@ -40,8 +43,11 @@ export default function Router() {
       children: [
         { element: <IndexPage />, index: true },
         { path: 'clients', element: <ClientPage /> },
+        { path: 'vehicles', element: <VehiclePage /> },
         { path: 'clients/add', element: <AddClientPage /> },
         { path: 'clients/edit/:id', element: <EditClientPage /> },
+        { path: 'vehicles/add', element: <AddVehiclePage /> },
+        { path: 'vehicles/edit/:id', element: <EditVehiclePage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

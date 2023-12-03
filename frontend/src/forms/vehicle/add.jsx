@@ -1,31 +1,37 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Alert, AlertTitle } from '@mui/material';
 
-import { editClient } from 'src/api/clients';
+import { addVehicle } from 'src/api/vehicles';
 import useLanguage from 'src/locale/useLanguage';
 
 import schema from './schema';
-import ClientForm from './form';
+import VehicleForm from './form';
+import { defaultValues } from './fields';
 
-export default function EditClientForm({ onSubmitCb, data }) {
+export default function AddVehicleForm({ onSubmitCb, onSuccessCb, disableFeedback = false }) {
   const [isError, setIsError] = useState(false);
-  
+
   const {
     mutate,
     isPending: loading,
     isSuccess,
     reset,
   } = useMutation({
-    mutationKey: 'edit-client',
-    mutationFn: editClient,
+    mutationKey: 'add-vehicle',
+    mutationFn: addVehicle,
     onSuccess: (result) => {
       if (!result.success) {
         setIsError(true);
+      } else {
+        if (onSuccessCb) {
+          onSuccessCb(result);
+        }
+        resetForm();
       }
     },
   });
@@ -36,35 +42,28 @@ export default function EditClientForm({ onSubmitCb, data }) {
     handleSubmit,
     control,
     formState: { errors, isValid },
-    watch,
+    reset: resetForm,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      ...data,
-      businessName: data.businessName ? data.businessName : '',
-    },
+    defaultValues,
     mode: 'onBlur',
   });
 
-  const onSubmit = (formData) => {
-    setIsError(null);
+  const onSubmit = (data) => {
+    console.log('got data', data);
 
-    console.log('formData', formData);
+    setIsError(null);
 
     if (!isValid) {
       return;
     }
 
-    if (formData.type === 'INDIVIDUAL') {
-      formData.businessName = null;
-    }
-
     if (typeof onSubmitCb === 'function' && onSubmitCb) {
-      onSubmitCb(formData);
-      return;
+      onSubmitCb(data);
     }
+    
 
-    mutate({ ...formData, id: data.id });
+    mutate({ ...data });
   };
 
   const onReset = () => {
@@ -72,12 +71,12 @@ export default function EditClientForm({ onSubmitCb, data }) {
     setIsError(null);
   };
 
-  return (
+  const feedbackContent = disableFeedback ? null : (
     <>
       {!loading && isSuccess && !isError && (
         <Alert sx={{ mb: 5 }} severity="success" onClose={onReset}>
           <AlertTitle>{translate('success')}</AlertTitle>
-          {translate('updateIsDone')}
+          {translate('addIsDone')} {translate('addAnother')}
         </Alert>
       )}
       {!loading && isError && (
@@ -86,19 +85,29 @@ export default function EditClientForm({ onSubmitCb, data }) {
           {translate('failMessage')}
         </Alert>
       )}
-      <ClientForm
+    </>
+  );
+
+  useEffect(() => {
+    console.log('addVehicleFormErrors', errors);
+  }, [errors]);
+
+  return (
+    <>
+      {feedbackContent}
+      <VehicleForm
         loading={loading}
         errors={errors}
-        control={control}
-        watch={watch}
+        control={control}        
         onSubmit={handleSubmit(onSubmit)}
-        submitLabel={translate('edit')}
+        submitLabel={translate('submit')}
       />
     </>
   );
 }
 
-EditClientForm.propTypes = {
+AddVehicleForm.propTypes = {
   onSubmitCb: PropTypes.func,
-  data: PropTypes.object,
+  onSuccessCb: PropTypes.func,
+  disableFeedback: PropTypes.bool,
 };

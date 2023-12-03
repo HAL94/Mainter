@@ -8,14 +8,14 @@ import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
 import { currentLocal } from 'src/locale/translation';
-import { useClientListContext } from 'src/providers/client-view-list';
+import { useVehicleListContext } from 'src/providers/vehicle-view-list';
 
 import { visuallyHidden } from '../../utils';
 
 // ----------------------------------------------------------------------
 
-export default function ClientTableHead({ rowCount, columns, onSelectAllClick }) {
-  const { state, actions } = useClientListContext();
+export default function VehicleTableHead({ rowCount, columns, onSelectAllClick }) {
+  const { state, actions } = useVehicleListContext();
   const { order, orderBy, selected } = state;
   const { setOrder, setOrderBy } = actions;
 
@@ -69,7 +69,7 @@ export default function ClientTableHead({ rowCount, columns, onSelectAllClick })
   );
 }
 
-ClientTableHead.propTypes = {
+VehicleTableHead.propTypes = {
   rowCount: PropTypes.number,
   columns: PropTypes.array,
   onSelectAllClick: PropTypes.func,

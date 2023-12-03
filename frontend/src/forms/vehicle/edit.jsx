@@ -6,26 +6,30 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Alert, AlertTitle } from '@mui/material';
 
-import { editClient } from 'src/api/clients';
+import { editVehicle } from 'src/api/vehicles';
 import useLanguage from 'src/locale/useLanguage';
 
 import schema from './schema';
-import ClientForm from './form';
+import VehicleForm from './form';
 
-export default function EditClientForm({ onSubmitCb, data }) {
+export default function EditVehicleForm({ onSubmitCb, onSuccessCb, data, disableFeedback }) {
   const [isError, setIsError] = useState(false);
-  
+
   const {
     mutate,
     isPending: loading,
     isSuccess,
     reset,
   } = useMutation({
-    mutationKey: 'edit-client',
-    mutationFn: editClient,
+    mutationKey: 'edit-vehicle',
+    mutationFn: editVehicle,
     onSuccess: (result) => {
       if (!result.success) {
         setIsError(true);
+      } else if (result && result.success) {
+        if (onSuccessCb) {
+          onSuccessCb(result);
+        }
       }
     },
   });
@@ -36,12 +40,11 @@ export default function EditClientForm({ onSubmitCb, data }) {
     handleSubmit,
     control,
     formState: { errors, isValid },
-    watch,
+    getValues
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
-      businessName: data.businessName ? data.businessName : '',
     },
     mode: 'onBlur',
   });
@@ -49,14 +52,10 @@ export default function EditClientForm({ onSubmitCb, data }) {
   const onSubmit = (formData) => {
     setIsError(null);
 
-    console.log('formData', formData);
+    // console.log('formData', formData);
 
     if (!isValid) {
       return;
-    }
-
-    if (formData.type === 'INDIVIDUAL') {
-      formData.businessName = null;
     }
 
     if (typeof onSubmitCb === 'function' && onSubmitCb) {
@@ -72,7 +71,7 @@ export default function EditClientForm({ onSubmitCb, data }) {
     setIsError(null);
   };
 
-  return (
+  const feedbackContent = disableFeedback ? null : (
     <>
       {!loading && isSuccess && !isError && (
         <Alert sx={{ mb: 5 }} severity="success" onClose={onReset}>
@@ -86,11 +85,17 @@ export default function EditClientForm({ onSubmitCb, data }) {
           {translate('failMessage')}
         </Alert>
       )}
-      <ClientForm
+    </>
+  );
+
+  return (
+    <>
+      {feedbackContent}
+      <VehicleForm
         loading={loading}
         errors={errors}
         control={control}
-        watch={watch}
+        getValues={getValues}
         onSubmit={handleSubmit(onSubmit)}
         submitLabel={translate('edit')}
       />
@@ -98,7 +103,9 @@ export default function EditClientForm({ onSubmitCb, data }) {
   );
 }
 
-EditClientForm.propTypes = {
+EditVehicleForm.propTypes = {
   onSubmitCb: PropTypes.func,
+  onSuccessCb: PropTypes.func,
   data: PropTypes.object,
+  disableFeedback: PropTypes.bool,
 };

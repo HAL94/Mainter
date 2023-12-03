@@ -1,33 +1,28 @@
 import { debounce } from 'lodash';
 
+import { Stack } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Stack, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 import useLanguage from 'src/locale/useLanguage';
-import { useClientListContext } from 'src/providers/client-view-list';
+import { useVehicleListContext } from 'src/providers/vehicle-view-list';
 
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function ClientTableToolbar() {
-  const { state, actions } = useClientListContext();
-  const { selected, query, type } = state;
-  const { setPage, setQuery, setType, deleteModal } = actions;
+export default function VehicleTableToolbar() {
+  const { state, actions } = useVehicleListContext();
+  const { selected, query } = state;
+  const { setPage, setQuery, deleteModal } = actions;
 
   const numSelected = selected.length;
 
-  const translate = useLanguage();
-  const options = [
-    { id: 0, value: '', label: translate('anyClientType') },
-    { id: 1, value: 'BUSINESS', label: translate('clientForm.business') },
-    { id: 2, value: 'INDIVIDUAL', label: translate('clientForm.individual') },
-  ];
+  const translate = useLanguage();  
 
   const onFilterChange = (event) => {
     debounce(() => {
@@ -62,7 +57,7 @@ export default function ClientTableToolbar() {
           <OutlinedInput
             defaultValue={query}
             onChange={onFilterChange}
-            placeholder={translate('clients.searchClients')}
+            placeholder={translate('vehicles.searchVehicles')}
             startAdornment={
               <InputAdornment position="start">
                 <Iconify
@@ -71,25 +66,7 @@ export default function ClientTableToolbar() {
                 />
               </InputAdornment>
             }
-          />
-          <FormControl sx={{ width: '400px' }}>
-            <InputLabel>{translate('chooseClientType')}</InputLabel>
-            <Select
-              id="demo-simple-select"
-              value={type}
-              label={translate('choose')}
-              onChange={(event) => {
-                // console.log('got value', event.target.value);
-                setType(event.target.value);
-              }}
-            >
-              {options.map((opt) => (
-                <MenuItem key={opt.id} value={opt.value}>
-                  {opt.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          />          
         </Stack>
       )}
 
