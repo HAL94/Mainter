@@ -2,13 +2,25 @@ import { API, handleApiError } from '.';
 
 export const getAllVehicles = async (data) => {
   try {
-    const { pageNo, pageSize, query, order, orderBy } = data;
+    const uri = '/vehicles';
 
-    const uri = `/vehicles?pageNo=${pageNo}&pageSize=${pageSize}&query=${query}&order=${order}&orderBy=${orderBy}`;
+    const params = new URLSearchParams();
+
+    Object.entries(data).forEach((entry) => {
+      const [key, value] = entry;
+      if (key && value) {
+        console.log(key, String(value));
+        params.append(key, String(value));
+      }
+    });
+
+    const url = new URL(API.getUri() + uri);
+    url.search = params;
+
 
     // console.log('data', data, 'uri', uri);
 
-    const res = await API.get(uri, {
+    const res = await API.get(url.href, {
       headers: {
         'Content-Type': 'application/json',
       },
