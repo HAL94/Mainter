@@ -2,9 +2,6 @@ import { sample } from 'lodash';
 import { faker } from '@faker-js/faker';
 import { PrismaService } from './prisma/prisma.service';
 
-// make sure a user exists and an appId associated with that user
-const APP_ID = '68afd701-fd1c-4262-adbd-65cd752d8bb6';
-
 function generateRandomPlate() {
   const letters = Array.from({ length: 3 }, () => randomLetter());
   const digits = Array.from({ length: 4 }, () => randomNumber());
@@ -32,7 +29,7 @@ function generateRandomYear() {
   );
 }
 
-const clientSeedData = () => {
+const clientSeedData = (appId: string) => {
   return [...Array(24)].map(() => {
     const sampleData: any = {
       fullName: faker.person.fullName(),
@@ -40,7 +37,7 @@ const clientSeedData = () => {
       type: sample(['BUSINESS', 'INDIVIDUAL']),
       code: faker.number.int(),
       email: faker.internet.email(),
-      appId: APP_ID,
+      appId,
     };
 
     sampleData.businessName =
@@ -50,11 +47,11 @@ const clientSeedData = () => {
   });
 };
 
-const vehicleSeedData = (clients: any[]) => {
+const vehicleSeedData = (clients: any[], appId: string) => {
   const ids = clients.map((client) => client.id);
   return [...Array(24)].map(() => {
     const sampleData: any = {
-      appId: APP_ID,
+      appId,
       ownerId: sample(ids),
       make: faker.company.name(),
       model: faker.commerce.productName(),
@@ -66,12 +63,12 @@ const vehicleSeedData = (clients: any[]) => {
   });
 };
 
-export default async function startSeed(prisma: PrismaService) {
+export default async function startSeed(prisma: PrismaService, appId: string) {
   try {
     await prisma.clientVehicle.deleteMany({});
     await prisma.client.deleteMany({});
 
-    const clients = clientSeedData();
+    const clients = clientSeedData(appId);
 
     await prisma.client.createMany({
       data: clients,
@@ -79,7 +76,7 @@ export default async function startSeed(prisma: PrismaService) {
 
     const createdClients = await prisma.client.findMany({});
 
-    const vehicles = vehicleSeedData(createdClients);
+    const vehicles = vehicleSeedData(createdClients, appId);
 
     await prisma.clientVehicle.createMany({
       data: vehicles,
