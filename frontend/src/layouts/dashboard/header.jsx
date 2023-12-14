@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from 'src/providers/theme/css';
 
 import Iconify from 'src/components/iconify';
 

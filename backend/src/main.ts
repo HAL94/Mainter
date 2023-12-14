@@ -1,24 +1,30 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
+import { ConfigService } from '@nestjs/config';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ZodValidationPipe());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
-  const config = new DocumentBuilder()
-    .setTitle('Azazil example')
-    .setDescription('The azazil API description')
-    .setVersion('1.0')
-    .addTag('Azazil')
-    .build();
+  const configService = app.get(ConfigService);
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  const origin = configService.get('ORIGIN');
 
-  await app.listen(3333);
+  app.enableCors({
+    credentials: true,
+    origin,
+  });
+
+  await app.listen(
+    Number(process.env.PORT || configService.get('PORT')),
+    '0.0.0.0',
+  );
 }
 bootstrap();

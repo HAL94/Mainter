@@ -4,7 +4,7 @@ import 'src/global.css';
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
 import Router from 'src/routes';
-import ThemeProvider from 'src/theme';
+import AppProviders from 'src/providers';
 
 // ----------------------------------------------------------------------
 
@@ -12,8 +12,8 @@ export default function App() {
   useScrollToTop();
 
   return (
-    <ThemeProvider>
+    <AppProviders>
       <Router />
-    </ThemeProvider>
+    </AppProviders>
   );
 }

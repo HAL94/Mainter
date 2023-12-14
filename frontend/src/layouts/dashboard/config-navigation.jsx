@@ -1,3 +1,4 @@
+import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -8,35 +9,33 @@ const icon = (name) => (
 
 const navConfig = [
   {
-    title: 'dashboard',
+    id: 'nav_0',
+    title: { en: 'Dashboard', ar: 'الرئيسية' },
     path: '/',
     icon: icon('ic_analytics'),
+    activeWhen: [/^\/$/]
   },
   {
-    title: 'user',
-    path: '/user',
-    icon: icon('ic_user'),
+    id: 'nav_1',
+    title: { en: 'Clients', ar: 'العملاء' },
+    path: '/clients',
+    icon: <Iconify icon='mdi:user-outline' />,
+    activeWhen: [/^\/clients$/, /^\/clients\/add$/, /^\/clients\/edit\/\d/]
   },
   {
-    title: 'product',
-    path: '/products',
-    icon: icon('ic_cart'),
+    id: 'nav_2',
+    title: { en: 'Vehicles', ar: 'المركبات' },
+    path: '/vehicles',
+    icon: <Iconify icon='mdi:car' />,
+    activeWhen: [/^\/vehicles$/, /^\/vehicles\/add$/, /^\/vehicles\/edit\/\d/]
   },
   {
-    title: 'blog',
-    path: '/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  },
+    id: 'nav_3',
+    title: { en: 'jobs', ar: 'أوامر الصيانة' },
+    path: '/jobs',
+    icon: <Iconify icon='mingcute:task-2-fill' />,
+    activeWhen: [/^\/jobs$/, /^\/jobs\/add$/, /^\/jobs\/edit\/\d/]
+  }
 ];
 
 export default navConfig;

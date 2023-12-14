@@ -18,12 +18,7 @@ const LANGS = [
   {
     value: 'ar',
     label: 'Arabic',
-    icon: '/assets/icons/ic_flag_de.svg',
-  },
-  {
-    value: 'fr',
-    label: 'French',
-    icon: '/assets/icons/ic_flag_fr.svg',
+    icon: '/assets/icons/ic_flag_ksa.svg',
   },
 ];
 
@@ -41,6 +36,9 @@ export default function LanguagePopover() {
     setOpen(null);
   };
 
+  const lang = localStorage.getItem('lang') || 'en';
+  const langShown = LANGS.find(l => l.value === lang);
+
   return (
     <>
       <IconButton
@@ -53,7 +51,7 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <img src={LANGS[0].icon} alt={LANGS[0].label} />
+        <img src={langShown.icon} alt={langShown.label} />
       </IconButton>
 
       <Popover

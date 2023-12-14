@@ -1,0 +1,11 @@
+export const SET_PAGE = 'SET_PAGE';
+export const SET_PAGES_PER_ROW = 'SET_PAGES_PER_ROW';
+export const SET_QUERY = 'SET_QUERY';
+export const SET_STATUS = 'SET_STATUS';
+export const SET_ORDER = 'SET_ORDER';
+export const SET_ORDER_BY = 'SET_ORDER_BY';
+export const SET_SELECTED = 'SET_SELECTED';
+export const OPEN_DELETE_MODAL = 'OPEN_DELETE_MODAL';
+export const CLOSE_DELETE_MODAL = 'CLOSE_DELETE_MODAL';
+export const OPEN_STATUS_MODAL = 'OPEN_STATUS_MODAL';
+export const CLOSE_STATUS_MODAL = 'CLOSE_STATUS_MODAL';

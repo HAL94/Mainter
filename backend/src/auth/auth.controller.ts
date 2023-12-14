@@ -1,12 +1,11 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
   Post,
-  Response,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 
@@ -14,7 +13,10 @@ import { Public, GetCurrentUserId, GetCurrentUser } from '../common/decorators';
 import { RtGuard } from '../common/guards';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
-import { JwtPayload, Tokens } from './types';
+import { JwtPayloadWithRt } from './types';
+import { handleApiError } from 'src/common/handle-error';
+import { Response } from 'express';
+import AppResponse from 'src/common/app-response';
 
 @Controller('auth')
 export class AuthController {
@@ -22,26 +24,32 @@ export class AuthController {
 
   @Get('/me')
   @HttpCode(HttpStatus.OK)
-  async me(@GetCurrentUser() payload: JwtPayload) {
-    if (!payload) {
-      throw new BadRequestException('Request is Invalid');
-    }
-
+  @UseGuards(RtGuard)
+  async me(
+    @GetCurrentUser() payload: Partial<JwtPayloadWithRt>,
+  ): Promise<AppResponse<Partial<JwtPayloadWithRt>>> {
+    delete payload.refreshToken;
     return {
-      ...payload,
+      data: { ...payload },
+      success: true,
     };
   }
 
   @Public()
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
-  async signupLocal(@Body() dto: AuthDto): Promise<any> {
-    await this.authService.signupLocal(dto);
-
-    return {
-      success: true,
-      message: 'Successfully signed-up',
-    };
+  async signupLocal(@Body() dto: AuthDto): Promise<AppResponse<null>> {
+    try {
+      await this.authService.signupLocal(dto);
+      return {
+        success: true,
+        message: 'Successfully signed-up',
+        data: null,
+        error: null,
+      };
+    } catch (error) {
+      return handleApiError(error);
+    }
   }
 
   @Public()
@@ -49,8 +57,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async signinLocal(
     @Body() dto: AuthDto,
-    @Response() res: any,
-  ): Promise<Tokens | undefined> {
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<AppResponse<null>> {
     try {
       const { access_token, refresh_token } =
         await this.authService.signinLocal(dto);
@@ -60,24 +68,31 @@ export class AuthController {
         this.authService.setTokenCookie('rt', res, refresh_token),
       ]);
 
-      return res.json({
+      return {
         success: true,
-        message: 'successfully logged in',
-      });
+        message: 'Successfully LoggedIn',
+        data: null,
+      };
     } catch (error) {
-      console.log('wrong', error);
+      return handleApiError(error);
     }
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@Response() res: any): Promise<boolean> {
-    this.authService.clearTokenCookie('at', res);
-    this.authService.clearTokenCookie('rt', res);
-    return res.json({
-      success: true,
-      message: 'Successfully Logged Out',
-    });
+  logout(@Res({ passthrough: true }) res: Response): AppResponse<null> {
+    try {
+      this.authService.clearTokenCookie('at', res);
+      this.authService.clearTokenCookie('rt', res);
+      return {
+        success: true,
+        message: 'Successfully Logged Out',
+        data: null,
+        error: null,
+      };
+    } catch (error) {
+      return handleApiError(error);
+    }
   }
 
   @Public()
@@ -87,17 +102,21 @@ export class AuthController {
   async refreshTokens(
     @GetCurrentUserId() userId: number,
     @GetCurrentUser('refreshToken') refreshToken: string,
-    @Response() res: any,
-  ): Promise<Tokens> {
-    const { access_token, refresh_token } =
-      await this.authService.refreshTokens(userId, refreshToken);
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<AppResponse<null>> {
+    try {
+      const { access_token, refresh_token } =
+        await this.authService.refreshTokens(userId, refreshToken);
 
-    await this.authService.setTokenCookie('at', res, access_token);
-    await this.authService.setTokenCookie('rt', res, refresh_token);
+      await this.authService.setTokenCookie('at', res, access_token);
+      await this.authService.setTokenCookie('rt', res, refresh_token);
 
-    return res.json({
-      success: true,
-      message: 'refresh done!',
-    });
+      return {
+        success: true,
+        message: 'refresh done!',
+      };
+    } catch (error) {
+      return handleApiError(error);
+    }
   }
 }
