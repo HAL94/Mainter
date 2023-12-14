@@ -7,6 +7,7 @@ import { ClientModule } from './client/client.module';
 import { AtGuard } from './common/guards';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { AppController } from './app.controller';
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AppController } from './app.controller';
     PrismaModule,
     ClientModule,
     VehicleModule,
+    JobModule,
   ],
   providers: [
     {

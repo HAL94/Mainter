@@ -32,6 +32,7 @@ model App {
   userId        Int             @unique
   Client        Client[]
   ClientVehicle ClientVehicle[]
+  Job           Job[]
 }
 
 model Client {
@@ -49,8 +50,32 @@ model Client {
   email         String          @unique
   type          ClientType
   ClientVehicle ClientVehicle[]
+  Job           Job[]
 
   @@map("clients")
+}
+
+model Job {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title       String
+  description String
+  orderNumber Int       @default(autoincrement())
+  works       Json
+  status      JobStatus @default(UNDER_MAINTENANCE)
+
+  app   App    @relation(fields: [appId], references: [id])
+  appId String
+
+  client  Client @relation(fields: [ownerId], references: [id])
+  ownerId Int
+
+  vehicle   ClientVehicle @relation(fields: [vehicleId], references: [id])
+  vehicleId Int
+
+  @@map("jobs")
 }
 
 model ClientVehicle {
@@ -64,12 +89,13 @@ model ClientVehicle {
   client  Client @relation(fields: [ownerId], references: [id])
   ownerId Int
 
-  make String
+  make  String
   model String
   plate String @unique
-  year String
+  year  String
 
   engineNo String?
+  Job      Job[]
 
   @@map("vehicles")
 }
@@ -77,4 +103,11 @@ model ClientVehicle {
 enum ClientType {
   INDIVIDUAL
   BUSINESS
+}
+
+enum JobStatus {
+  OPENED
+  UNDER_MAINTENANCE
+  COMPLETED
+  CANCELED
 }

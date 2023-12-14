@@ -1,36 +1,37 @@
 import {
-  Controller,
   Body,
-  Post,
+  Controller,
   HttpCode,
   HttpStatus,
+  Post,
   Get,
   Param,
   Query,
 } from '@nestjs/common';
-import { VehicleService } from './vehicle.service';
 import { GetCurrentAppId } from 'src/common/decorators/get-current-app-id.decorator';
 import { handleApiError } from 'src/common/handle-error';
-import { ClientVehicle } from '@prisma/client';
-import AppResponse from 'src/common/app-response';
-import { CreateVehicleDto } from './dto/create-vehicle.dto';
+import { JobService } from './job.service';
+import { CreateJobDto } from './dto/create-job.dto';
 import { GetIdDto } from 'src/common/dto/get-id.dto';
-import { UpdateVehicleDto } from './dto/update-vehicle.dto';
-import { DeleteVehicleDto } from './dto/delete-vehicle.dto';
-import { VehiclePageDto } from './dto/vehicle-page.dto';
+import AppResponse from 'src/common/app-response';
+import { JobPageDto } from './dto/job-page.dto';
+import { Job } from '@prisma/client';
+import { DeleteJobDto } from './dto/delete-job.dto';
+import { UpdateJobStatusDto } from './dto/update-job-status.dto';
+import { UpdateJobDto } from './dto/update-job.dto';
 
-@Controller('vehicles')
-export class VehicleController {
-  constructor(private vehicles: VehicleService) {}
+@Controller('jobs')
+export class JobController {
+  constructor(private jobs: JobService) {}
 
   @Get('/')
   @HttpCode(HttpStatus.OK)
   async findAll(
-    @Query() pageInfo: VehiclePageDto,
+    @Query() pageInfo: JobPageDto,
     @GetCurrentAppId() appId: string,
   ): Promise<AppResponse<any>> {
     try {
-      const data = await this.vehicles.getAllVehicles(pageInfo, appId);
+      const data = await this.jobs.getAllJobs(pageInfo, appId);
 
       return {
         success: true,
@@ -46,17 +47,11 @@ export class VehicleController {
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   async findOne(
+    @Param() getOneInfo: GetIdDto,
     @GetCurrentAppId() appId: string,
-    @Param() data: GetIdDto,
-  ): Promise<AppResponse<ClientVehicle>> {
+  ) {
     try {
-      const result = await this.vehicles.getOneVehicle(data, appId);
-      return {
-        success: true,
-        error: null,
-        message: `got vehicle with id: ${data.id}`,
-        data: result,
-      };
+      return await this.jobs.getOneJob(getOneInfo, appId);
     } catch (error) {
       return handleApiError(error);
     }
@@ -66,16 +61,10 @@ export class VehicleController {
   @HttpCode(HttpStatus.CREATED)
   async createOne(
     @GetCurrentAppId() appId: string,
-    @Body() data: CreateVehicleDto,
-  ): Promise<AppResponse<ClientVehicle>> {
+    @Body() data: CreateJobDto,
+  ) {
     try {
-      const result = await this.vehicles.addVehicle(data, appId);
-      return {
-        success: true,
-        data: result,
-        error: null,
-        message: 'Created Vehicle Successfully',
-      };
+      return await this.jobs.addJob(data, appId);
     } catch (error) {
       return handleApiError(error);
     }
@@ -84,11 +73,25 @@ export class VehicleController {
   @Post('/update')
   @HttpCode(HttpStatus.OK)
   async updateOne(
-    @Body() vehicleData: UpdateVehicleDto,
+    @Body() jobData: UpdateJobDto,
     @GetCurrentAppId() appId: string,
   ) {
     try {
-      return await this.vehicles.updateOne(vehicleData, appId);
+      return await this.jobs.updateOne(jobData, appId);
+    } catch (error) {
+      return handleApiError(error);
+    }
+  }
+
+  @Post('/status/:id')
+  @HttpCode(HttpStatus.OK)
+  async updateJobStatus(
+    @Param() param: GetIdDto,
+    @Body() data: UpdateJobStatusDto,
+    @GetCurrentAppId() appId: string,
+  ) {
+    try {
+      return await this.jobs.updateOneJobStatus(data, param, appId);
     } catch (error) {
       return handleApiError(error);
     }
@@ -97,11 +100,11 @@ export class VehicleController {
   @Post('/delete')
   @HttpCode(HttpStatus.OK)
   async deleteOne(
-    @Body() vehicleData: DeleteVehicleDto,
+    @Body() vehicleData: DeleteJobDto,
     @GetCurrentAppId() appId: string,
-  ): Promise<AppResponse<ClientVehicle>> {
+  ): Promise<AppResponse<Job>> {
     try {
-      const deleted = await this.vehicles.remove(vehicleData, appId);
+      const deleted = await this.jobs.remove(vehicleData, appId);
 
       const message = `Successfully deleted vehicle records with ids: [${deleted
         .map((r) => r.id)

@@ -58,7 +58,10 @@ export class ResponseInterceptor implements NestInterceptor {
     response.status(statusCode);
 
     return {
-      success: res?.success,
+      success:
+        statusCode === HttpStatus.OK ||
+        statusCode === HttpStatus.CREATED ||
+        statusCode === HttpStatus.NO_CONTENT,
       path: request.url,
       statusCode,
       result: res,

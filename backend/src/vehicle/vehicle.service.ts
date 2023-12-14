@@ -6,13 +6,14 @@ import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { GetIdDto } from 'src/common/dto/get-id.dto';
 import { ConfigService } from '@nestjs/config';
 import { DeleteVehicleDto } from './dto/delete-vehicle.dto';
-import { PageDto } from 'src/common/dto/page.dto';
+import { VehiclePageDto } from './dto/vehicle-page.dto';
+import { convertStringWithDotsToNestedObj } from 'src/utils';
 
 @Injectable()
 export class VehicleService {
   constructor(private prisma: PrismaService, private config: ConfigService) {}
 
-  async getAllVehicles(pageInfo: PageDto, appId: string) {
+  async getAllVehicles(pageInfo: VehiclePageDto, appId: string) {
     // console.log('pageInfo', pageInfo);
     const {
       pageNo,
@@ -20,6 +21,7 @@ export class VehicleService {
       query,
       order: direction,
       orderBy: orderKey,
+      clientId,
     } = pageInfo;
 
     const skip = (pageNo - 1) * pageSize;
@@ -42,13 +44,17 @@ export class VehicleService {
       ],
     };
 
+    if (clientId) {
+      filteration.client = {
+        id: clientId,
+      };
+    }
+
     const orderation: any = {};
 
     if (orderKey && direction) {
-      const obj = {
-        [orderKey]: direction,
-      };
-      orderation.orderBy = obj;
+      const orderBy = convertStringWithDotsToNestedObj(orderKey, direction);
+      orderation.orderBy = orderBy;
     }
 
     const dataLength = await this.prisma.clientVehicle.count({
@@ -147,7 +153,7 @@ export class VehicleService {
 
       if (!vehicleFound) {
         throw new HttpException(
-          'Could not find vehicle',
+          'Could not find vehicle with provided id',
           HttpStatus.BAD_REQUEST,
         );
       }

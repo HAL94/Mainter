@@ -144,7 +144,7 @@ export class ClientService {
 
       if (!found) {
         throw new HttpException(
-          'Could not find client',
+          'Could not find client with provided id',
           HttpStatus.BAD_REQUEST,
         );
       }

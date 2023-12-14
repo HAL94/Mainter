@@ -1,0 +1,25 @@
+work orders schema:
+- title
+- description
+- orderNumber
+
+- client
+- vehicle
+
+- maintenanceWork : [{
+    work: string,
+    cost: number
+}]
+
+- status: [
+    Received By Client, 
+    Under Maintenance, 
+    Done Maintenance, 
+    Done Assembled, 
+    Under Testing by Client, 
+    Completed, 
+    Delayed, 
+    Canceld 
+]
+
+
