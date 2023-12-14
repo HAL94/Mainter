@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
-import { getAllClients } from 'src/api/clients';
+import { getAllVehicles } from 'src/api/vehicles';
 
 import AutoCompleteField from '../auto-complete-field';
 
-export default function OwnerAutocompleteField(props) {
-  const [pageState, setPageStage] = useState({ pageNo: 1, pageSize: 20 });
-  const { enabled: shouldEnable } = props;
+export default function VehicleAutocompleteField(props) {
+  const [pageState, setPageState] = useState({ pageNo: 1, pageSize: 20 });
+  const { enabled: shouldEnable, clientId } = props;
   const [enabled, setEnabled] = useState(shouldEnable);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -19,8 +19,8 @@ export default function OwnerAutocompleteField(props) {
     isFetching,
     isLoading,
   } = useQuery({
-    queryKey: ['clients-lookup', pageNo, pageSize],
-    queryFn: () => getAllClients({ ...pageState }),
+    queryKey: ['vehicle-lookup', pageNo, pageSize, clientId],
+    queryFn: () => getAllVehicles({ ...pageState, clientId }),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
     enabled,
@@ -28,20 +28,15 @@ export default function OwnerAutocompleteField(props) {
 
   useEffect(() => {
     if (result?.data) {
-      const length = result?.data?.table.length;
-      if (options?.length < length) {
-        setOptions(
-          options.concat([
-            ...(result?.data.table?.data?.map((client) => ({
-              ownerId: client.id,
-              label: client.fullName,
-            })) || []),
-          ])
-        );
-      }
+      setOptions([
+        ...(result?.data.table?.data?.map((vehicle) => ({
+          vehicleId: vehicle.id,
+          label: `${vehicle.plate} - ${vehicle.make} - ${vehicle.model} - ${vehicle.year}`,
+        })) || []),
+      ]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result?.data]);
+  }, [result?.data, clientId]);
 
   return (
     <AutoCompleteField
@@ -54,18 +49,19 @@ export default function OwnerAutocompleteField(props) {
       setOnClose={() => {
         setOpen(false);
       }}
-      loading={isFetching || isLoading || options.length <= 0}
-      valueAccessor="ownerId"
+      loading={isFetching || isLoading}
+      valueAccessor="vehicleId"
       labelAccessor="label"
       options={options}
       hasNext={options?.length < result?.data?.table?.length}
       refetch={() => {
-        setPageStage((prev) => ({ ...prev, pageNo: prev.pageNo + 1 }));
+        setPageState((prev) => ({ ...prev, pageNo: prev.pageNo + 1 }));
       }}
     />
   );
 }
 
-OwnerAutocompleteField.propTypes = {
+VehicleAutocompleteField.propTypes = {  
   enabled: PropTypes.bool,
+  clientId: PropTypes.number,
 };

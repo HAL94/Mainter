@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { Box, Stack } from '@mui/material';
 
 import useLanguage from 'src/locale/useLanguage';
 
@@ -10,12 +10,17 @@ import FORM_FIELDS from './fields';
 import TextInputField from '../components/text-input-field';
 import OwnerAutocompleteField from '../components/owner-autocomplete-field';
 
-export default function VehicleForm({ control, onSubmit, errors, loading, submitLabel, getValues }) {
-  const translate = useLanguage();  
-  
-  console.log('ownerId', getValues?.(FORM_FIELDS.ownerId));
+export default function VehicleForm({
+  control,
+  onSubmit,
+  errors,
+  loading,
+  submitLabel,
+  getValues,
+}) {
+  const translate = useLanguage();
   return (
-    <form onSubmit={onSubmit}>
+    <Box>
       <Stack spacing={3}>
         <OwnerAutocompleteField
           control={control}
@@ -90,14 +95,15 @@ export default function VehicleForm({ control, onSubmit, errors, loading, submit
         <LoadingButton
           loading={loading}
           size="large"
-          type="submit"
+          type="button"
+          onClick={onSubmit}
           variant="contained"
           color="inherit"
         >
           {submitLabel}
         </LoadingButton>
       </Stack>
-    </form>
+    </Box>
   );
 }
 

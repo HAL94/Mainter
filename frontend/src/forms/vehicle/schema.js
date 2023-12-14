@@ -8,7 +8,7 @@ export default yup
   .object({
     [OWNERID]: yup
       .number()
-      .typeError(Translate('vehicleForm.ownerIdMustBeNumber'))
+      .typeError(Translate('vehicleForm.ownerIdIsRequired'))
       .required(Translate('vehicleForm.ownerIdIsRequired')),
     [MAKE]: yup.string().required(Translate('vehicleForm.makeIsRequired')),
     [MODEL]: yup.string().required(Translate('vehicleForm.modelIsRequired')),

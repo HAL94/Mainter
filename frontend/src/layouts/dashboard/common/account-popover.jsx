@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import { useLogout } from 'src/utils/auth';
 
 import { account } from 'src/_mock/account';
+import { currentLocal } from 'src/locale/translation';
 
 // ----------------------------------------------------------------------
 
@@ -64,14 +65,14 @@ export default function AccountPopover() {
       >
         <Avatar
           src={account.photoURL}
-          alt={account.displayName}
+          alt={account.displayName[currentLocal()]}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {account.displayName.charAt(0).toUpperCase()}
+          {account.displayName[currentLocal()]}
         </Avatar>
       </IconButton>
 
@@ -92,7 +93,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {account.displayName[currentLocal()]}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {account.email}

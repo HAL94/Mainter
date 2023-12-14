@@ -6,20 +6,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Alert, AlertTitle } from '@mui/material';
 
-import { addVehicle } from 'src/api/vehicles';
+import { addJob } from 'src/api/jobs';
 import useLanguage from 'src/locale/useLanguage';
 
+import JobForm from './form';
 import schema from './schema';
-import VehicleForm from './form';
 import { defaultValues } from './fields';
 
-export default function AddVehicleForm({
-  onSubmitCb,
-  onSuccessCb,
-  submitLabel,
-  formValues = {},
-  disableFeedback = false,
-}) {
+export default function AddJobForm({ onSubmitCb, onSuccessCb, disableFeedback = false }) {
   const [isError, setIsError] = useState(false);
 
   const {
@@ -28,8 +22,8 @@ export default function AddVehicleForm({
     isSuccess,
     reset,
   } = useMutation({
-    mutationKey: 'add-vehicle',
-    mutationFn: addVehicle,
+    mutationKey: 'add-job',
+    mutationFn: addJob,
     onSuccess: (result) => {
       if (!result.success) {
         setIsError(true);
@@ -49,17 +43,16 @@ export default function AddVehicleForm({
     control,
     formState: { errors, isValid },
     reset: resetForm,
+    watch,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      ...defaultValues,
-      ...formValues,
-    },
+    defaultValues,
     mode: 'onBlur',
   });
 
   const onSubmit = (data) => {
-    // console.log('got data', data);
+    console.log('got data', data);
 
     setIsError(null);
 
@@ -99,21 +92,21 @@ export default function AddVehicleForm({
   return (
     <>
       {feedbackContent}
-      <VehicleForm
+      <JobForm
         loading={loading}
         errors={errors}
         control={control}
+        watch={watch}
+        setValue={setValue}
         onSubmit={handleSubmit(onSubmit)}
-        submitLabel={submitLabel || translate('submit')}
+        submitLabel={translate('submit')}
       />
     </>
   );
 }
 
-AddVehicleForm.propTypes = {
+AddJobForm.propTypes = {
   onSubmitCb: PropTypes.func,
   onSuccessCb: PropTypes.func,
   disableFeedback: PropTypes.bool,
-  formValues: PropTypes.object,
-  submitLabel: PropTypes.string,
 };

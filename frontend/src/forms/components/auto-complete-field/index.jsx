@@ -32,6 +32,7 @@ export default function AutoCompleteField(props) {
   });
 
   const { error } = fieldState;
+
   return (
     <Autocomplete
       id={id}

@@ -6,19 +6,18 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Alert, AlertTitle } from '@mui/material';
 
-import { addVehicle } from 'src/api/vehicles';
+import { editJob } from 'src/api/jobs';
 import useLanguage from 'src/locale/useLanguage';
 
+import JobForm from './form';
 import schema from './schema';
-import VehicleForm from './form';
-import { defaultValues } from './fields';
 
-export default function AddVehicleForm({
+export default function EditJobForm({
   onSubmitCb,
   onSuccessCb,
+  data,
   submitLabel,
-  formValues = {},
-  disableFeedback = false,
+  disableFeedback,
 }) {
   const [isError, setIsError] = useState(false);
 
@@ -28,16 +27,15 @@ export default function AddVehicleForm({
     isSuccess,
     reset,
   } = useMutation({
-    mutationKey: 'add-vehicle',
-    mutationFn: addVehicle,
+    mutationKey: 'edit-job',
+    mutationFn: editJob,
     onSuccess: (result) => {
       if (!result.success) {
         setIsError(true);
-      } else {
+      } else if (result && result.success) {
         if (onSuccessCb) {
           onSuccessCb(result);
         }
-        resetForm();
       }
     },
   });
@@ -48,30 +46,31 @@ export default function AddVehicleForm({
     handleSubmit,
     control,
     formState: { errors, isValid },
-    reset: resetForm,
+    setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      ...defaultValues,
-      ...formValues,
+      ...data,
     },
     mode: 'onBlur',
   });
 
-  const onSubmit = (data) => {
-    // console.log('got data', data);
-
+  const onSubmit = (formData) => {
     setIsError(null);
+
+    // console.log('formData', formData);
 
     if (!isValid) {
       return;
     }
 
     if (typeof onSubmitCb === 'function' && onSubmitCb) {
-      onSubmitCb(data);
+      onSubmitCb(formData);
+      return;
     }
 
-    mutate({ ...data });
+    mutate({ ...formData, id: data.id });
   };
 
   const onReset = () => {
@@ -84,7 +83,7 @@ export default function AddVehicleForm({
       {!loading && isSuccess && !isError && (
         <Alert sx={{ mb: 5 }} severity="success" onClose={onReset}>
           <AlertTitle>{translate('success')}</AlertTitle>
-          {translate('addIsDone')} {translate('addAnother')}
+          {translate('updateIsDone')}
         </Alert>
       )}
       {!loading && isError && (
@@ -99,21 +98,23 @@ export default function AddVehicleForm({
   return (
     <>
       {feedbackContent}
-      <VehicleForm
+      <JobForm
         loading={loading}
         errors={errors}
         control={control}
+        watch={watch}
+        setValue={setValue}
         onSubmit={handleSubmit(onSubmit)}
-        submitLabel={submitLabel || translate('submit')}
+        submitLabel={submitLabel || translate('edit')}
       />
     </>
   );
 }
 
-AddVehicleForm.propTypes = {
+EditJobForm.propTypes = {
   onSubmitCb: PropTypes.func,
   onSuccessCb: PropTypes.func,
+  data: PropTypes.object,
   disableFeedback: PropTypes.bool,
-  formValues: PropTypes.object,
   submitLabel: PropTypes.string,
 };

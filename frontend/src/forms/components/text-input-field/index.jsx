@@ -5,7 +5,7 @@ import { useController } from 'react-hook-form';
 import { TextField } from '@mui/material';
 
 export default function TextInputField(props) {
-  const { control, name, type, inputProps, errors, required, disabled } = props;
+  const { control, name, type, inputProps, errors, required, disabled, errorAccessor } = props;
   const { field } = useController({
     control,
     name,
@@ -21,8 +21,8 @@ export default function TextInputField(props) {
       value={field.value}
       name={field.name}
       required={required}
-      error={Boolean(errors[name])}
-      helperText={errors?.[name]?.message}
+      error={Boolean(errors[name] || errorAccessor?.())}
+      helperText={errors?.[name]?.message || errorAccessor?.()}
       disabled={disabled}
       type={type}
       {...field}
@@ -39,4 +39,5 @@ TextInputField.propTypes = {
   errors: PropTypes.object,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
+  errorAccessor: PropTypes.func,
 };

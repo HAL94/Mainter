@@ -25,7 +25,22 @@ const lang = {
     newVehicle: 'إضافة مركبة',
     editVehicle: 'تعديل بيانات مركبة',
     searchVehicles: 'بحث المركبات...',
-    addNewVehicle: 'إضافة مركبة جديدة',
+    addNewVehicle: 'إضافة مركبة جديدة',    
+  },
+  jobs: {
+    pageTitle: 'أوامر الصيانة',
+    newJob: 'إضافة أمر صيانة',
+    editJob: 'تعديل أمر صيانة',
+    searchJobs: 'البحث باسم الأمر أو اسم العميل',
+    addNewJob: 'إضافة أمر جديد',
+    chooseStatus: 'اختر حالة الأمر',
+    updateStatus: 'تحديث الحالة',
+    status: (status) =>
+      ({
+        UNDER_MAINTENANCE: 'تحت الصيانة',
+        COMPLETED: 'مكتمل',
+        CANCELED: 'ملغي',
+      })[status],
   },
   clientForm: {
     fullNameIsRequired: 'الأسم الكامل حقل مطلوب',
@@ -57,6 +72,18 @@ const lang = {
       engineNo: 'رقم المكينة',
     },
   },
+  jobForm: {
+    basicSectionTitle: 'معلومات الصيانة',
+    clientSectionTitle: 'اختيار العميل',
+    clientVehicleTitle: "معلومات المركبة",
+    workSectionTitle: ' أعمال الصيانة للمركبة',    
+    label: {
+      work: 'اسم العمل',
+      cost: 'التكلفة',
+      workPlaceholder: 'تبديل قماشات',
+      costPlaceholder: '200'
+    }
+  },
   deleteModalTitle: 'حدث خطأ في النظام، الرجاء المحاولة لاحقاً',
   deleteIdleModalTitle: 'هل أنت متأكد من عملية حذف البيانات؟',
   deleteModalConfirm: 'تأكيد الحذف',
@@ -76,9 +103,12 @@ const lang = {
   addAnother: 'يمكنك المتابعة بإضافة بيانات إضافية',
   chooseClientType: 'اختر نوعية العميل',
   anyClientType: 'الكل',
+  add: 'إضافة',
   edit: 'تعديل',
   delete: 'حذف',
   selected: 'محدد',
+  title: 'العنوان',
+  description: 'الوصف'
 };
 
 export default lang;

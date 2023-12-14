@@ -10,8 +10,6 @@ import useLanguage from 'src/locale/useLanguage';
 
 import Iconify from 'src/components/iconify';
 
-import { API } from 'src/api';
-
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
 import AppOrderTimeline from '../app-order-timeline';
@@ -21,20 +19,14 @@ import AppWidgetSummary from '../app-widget-summary';
 import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
-import { getAllClients } from 'src/api/clients';
-
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
   const translate = useLanguage();
-  
-  const handleGettingClient = async () => {
-    await getAllClients();
-  };
   return (
     <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: 5 }} onClick={handleGettingClient}>
+      <Typography variant="h4" sx={{ mb: 5 }}>
         {/* Hi, Welcome back 👋 */}
         {translate('welcome')}
       </Typography>
