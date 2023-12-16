@@ -9,7 +9,6 @@ export const getAllClients = async (data) => {
     Object.entries(data).forEach((entry) => {
       const [key, value] = entry;
       if (key && value) {
-        console.log(key, String(value));
         params.append(key, String(value));
       }
     });

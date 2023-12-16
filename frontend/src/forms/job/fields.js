@@ -4,6 +4,7 @@ export const OWNERID = 'ownerId';
 export const VEHICLEID = 'vehicleId';
 export const WORKS = 'works';
 export const STATUS = 'status';
+export const ORDER_NUMBER = 'orderNumber';
 
 export const COST = 'cost';
 export const WORK = 'work';

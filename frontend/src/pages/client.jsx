@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import ClientView from 'src/modules/client/view-list';
+import ClientViewTable from 'src/modules/client/view-table';
 import { ClientListProvider } from 'src/providers/client-view-list';
 
 // ----------------------------------------------------------------------
@@ -13,7 +13,7 @@ export default function ClientPage() {
       </Helmet>
 
       <ClientListProvider>
-        <ClientView />
+        <ClientViewTable />
       </ClientListProvider>
 
     </>

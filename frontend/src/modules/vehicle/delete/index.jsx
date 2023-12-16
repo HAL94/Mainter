@@ -34,9 +34,10 @@ export default function DeleteVehicleDialog() {
     },
   });
 
-  const onCloseHandler = () => {
-    if (loading) return;
+  const onCloseHandler = (_event) => {    
+    if (loading) return;    
     deleteModal.setClose();
+    setTimeout(() => reset(), 500);
   };
 
   const MODAL_CONTENTS_STATE = {
@@ -46,10 +47,7 @@ export default function DeleteVehicleDialog() {
       actions: (
         <Button
           onClick={() => {
-            deleteModal.setClose();
-            setTimeout(() => {
-              reset();
-            }, 500);
+            deleteModal.setClose();            
           }}
         >
           {translate('close')}
@@ -62,8 +60,7 @@ export default function DeleteVehicleDialog() {
       actions: (
         <Button
           onClick={() => {
-            deleteModal.setClose();
-            setTimeout(() => reset(), 500);
+            deleteModal.setClose();            
           }}
         >
           {translate('close')}
@@ -101,7 +98,7 @@ export default function DeleteVehicleDialog() {
     dialogTitle = translate('deleteMultipleTitle')(modalData.length);
   }
 
-  if (result?.success) {
+  if (result && result?.success) {
     const { title, actions: successActions, content } = MODAL_CONTENTS_STATE.SUCCESS();
 
     dialogContent = content;

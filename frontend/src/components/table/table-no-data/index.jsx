@@ -1,13 +1,14 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 
 import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 
-// ----------------------------------------------------------------------
+import useLanguage from 'src/locale/useLanguage';
 
-export default function TableNoData({ query }) {
+export default function TableNoData() {
+  const translate = useLanguage();
   return (
     <TableRow>
       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -17,20 +18,10 @@ export default function TableNoData({ query }) {
           }}
         >
           <Typography variant="h6" paragraph>
-            Not found
-          </Typography>
-
-          <Typography variant="body2">
-            No results found for &nbsp;
-            <strong>&quot;{query}&quot;</strong>.
-            <br /> Try checking for typos or using complete words.
+            {translate('noTableData')}
           </Typography>
         </Paper>
       </TableCell>
     </TableRow>
   );
 }
-
-TableNoData.propTypes = {
-  query: PropTypes.string,
-};

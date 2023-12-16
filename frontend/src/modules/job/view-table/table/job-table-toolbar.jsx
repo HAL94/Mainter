@@ -22,7 +22,7 @@ const options = JOB_STATUS.map((opt) => ({
   id: opt.value,
 }));
 
-export default function ClientTableToolbar() {
+export default function JobTableToolbar() {
   const { state, actions } = useJobListContext();
   const { selected, query, type } = state;
   const { setPage, setQuery, setStatus, deleteModal } = actions;

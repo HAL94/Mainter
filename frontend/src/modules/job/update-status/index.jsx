@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { faker } from '@faker-js/faker';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
@@ -39,6 +40,9 @@ export default function UpdateJobStatusDialog() {
 
   const onCloseHandler = () => {
     if (loading) return;
+    setTimeout(() => {
+      reset();
+    }, 500);
     statusModal.setClose();
   };
 
@@ -72,17 +76,17 @@ export default function UpdateJobStatusDialog() {
           >
             {[
               {
-                id: 'fojiakfa',
+                id: faker.string.uuid(),
                 value: 'UNDER_MAINTENANCE',
                 label: 'Under Maintenance',
               },
               {
-                id: 'gsdagsfgsdf',
+                id: faker.string.uuid(),
                 value: 'COMPLETED',
                 label: 'Completed',
               },
               {
-                id: 'gsdgsfhsfhgfdhdghbd',
+                id: faker.string.uuid(),
                 value: 'CANCELED',
                 label: 'Canceled',
               },

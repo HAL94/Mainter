@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import VehicleViewList from 'src/modules/vehicle/view-list';
+import VehicleViewTable from 'src/modules/vehicle/view-table';
 import { VehicleListProvider } from 'src/providers/vehicle-view-list';
 
 // ----------------------------------------------------------------------
@@ -13,7 +13,7 @@ export default function VehiclePage() {
       </Helmet>
 
       <VehicleListProvider>
-        <VehicleViewList />
+        <VehicleViewTable />
       </VehicleListProvider>
 
     </>

@@ -50,7 +50,7 @@ const lang = {
     workSectionTitle: 'Vehicle Job Tasks',
     label: {
       work: 'Work',
-      cost: 'Cost',
+      cost: 'Cost SAR',
       workPlaceholder: 'Replace Brakepads',
       costPlaceholder: '200',
     },
@@ -111,6 +111,10 @@ const lang = {
   close: 'Close',
   title: 'Title',
   description: 'Description',
+  noResultsFor: 'No results found for',
+  noResultsTitle: 'No Results',
+  noTableData: 'No Data Found',
+  tryChangingWord: 'Try checking for typos or using complete words.'
 };
 
 export default lang;

@@ -79,7 +79,7 @@ const lang = {
     workSectionTitle: ' أعمال الصيانة للمركبة',    
     label: {
       work: 'اسم العمل',
-      cost: 'التكلفة',
+      cost: 'التكلفة ر.س',
       workPlaceholder: 'تبديل قماشات',
       costPlaceholder: '200'
     }
@@ -108,7 +108,12 @@ const lang = {
   delete: 'حذف',
   selected: 'محدد',
   title: 'العنوان',
-  description: 'الوصف'
+  description: 'الوصف',
+  noResultsFor: 'لا يوجد نتائج لكلمة البحث المدخلة',
+  noResultsTitle: 'لا يوجد',
+  noTableData: 'لا يوجد بيانات',
+  tryChangingWord: 'انتبه لطريقة اإملاء أو جرب كلمات أخرى'
+
 };
 
 export default lang;

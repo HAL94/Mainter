@@ -59,7 +59,7 @@ export const addVehicle = async (data) => {
 
 export const deleteVehicles = async (data) => {
   try {
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 1000));    
     const res = await API.post('/vehicles/delete', data, {
       headers: {
         'Content-Type': 'application/json',
